@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>외투법인 실무 카드 01</title>
+<style>
+  :root {
+    --navy: #1f3a5f;
+    --navy-soft: #e9eef5;
+    --ink: #1d232b;
+    --gray: #5b6573;
+    --line: #dde2e8;
+    --bg-soft: #f6f7f9;
+    --ok: #2f7a5b;
+    --warn: #a4462f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1080px;
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .slide {
+    width: 1080px; height: 1350px; padding: 76px 76px 56px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  body.one .slide { display: none; border-bottom: 0; }
+  body.one .slide.on { display: flex; }
+
+  /* 머리 */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 26px; font-weight: 600; color: var(--ok);
+    background: #eaf4ef; border-radius: 999px; padding: 10px 24px;
+  }
+  .badge::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+  .page { font-size: 26px; color: #9aa3ae; font-weight: 600; }
+  h1 { font-size: 78px; font-weight: 800; letter-spacing: -2px; line-height: 1.25; margin-top: 44px; }
+  h1 em { font-style: normal; color: var(--navy); }
+  .sub { font-size: 34px; color: var(--gray); margin-top: 28px; line-height: 1.6; }
+
+  h2 {
+    font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px;
+    letter-spacing: -1px; margin-top: 44px;
+  }
+  h2 .no {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff;
+    font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .lead { font-size: 32px; color: var(--gray); margin-top: 18px; line-height: 1.55; }
+
+  .card { border: 2px solid var(--line); border-radius: 24px; padding: 34px 38px; }
+  .label { font-size: 26px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; }
+  .navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .navy .label { color: #b9c7da; }
+  .soft { background: var(--bg-soft); }
+
+  /* 1장 */
+  .answer { margin-top: auto; }
+  .answer .big { font-size: 40px; font-weight: 700; line-height: 1.55; margin-top: 16px; }
+  .answer .big b { color: #fff; background: rgba(255,255,255,0.14); border-radius: 10px; padding: 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+  .chip { font-size: 27px; padding: 12px 22px; border-radius: 14px; background: var(--bg-soft); border: 2px solid var(--line); }
+
+  /* 2장 */
+  .rate { display: flex; align-items: baseline; gap: 22px; margin-top: 14px; }
+  .rate .pct { font-size: 80px; font-weight: 800; letter-spacing: -3px; line-height: 1.1; }
+  .rate .what { font-size: 31px; line-height: 1.5; }
+  .soft .pct { color: var(--gray); }
+  .navy .what { color: #e3eaf3; }
+  .ref { font-size: 24px; color: #8a94a1; margin-top: 14px; }
+  .navy .ref { color: #9fb0c6; }
+  .stack { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
+  .stack .card { padding: 28px 36px; }
+  .nb { white-space: nowrap; }
+  .slide > * { flex-shrink: 0; }
+  #s5 .fix > div { padding: 18px 24px; font-size: 26px; }
+  #s5 h2 { margin-top: 36px; }
+  #s5 .basis { padding: 24px 32px; }
+  #s5 .basis li { font-size: 22px; }
+  .fix.last { margin-bottom: 28px; }
+  .gains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 22px; }
+  .gain { border: 2px solid var(--line); border-radius: 20px; padding: 24px 24px; }
+  .gain b { display: block; font-size: 30px; color: var(--navy); }
+  .gain p { font-size: 25px; line-height: 1.55; color: var(--gray); margin-top: 10px; }
+
+  /* 3장 */
+  .flow { display: flex; flex-direction: column; gap: 0; margin-top: 30px; }
+  .step { border: 2px solid var(--line); border-radius: 22px; padding: 24px 32px; display: grid; grid-template-columns: 150px 1fr; gap: 6px 22px; }
+  .step .n { font-size: 24px; font-weight: 700; color: var(--navy); letter-spacing: 1.5px; padding-top: 8px; }
+  .step h3 { font-size: 36px; font-weight: 800; }
+  .step p { grid-column: 2; font-size: 28px; line-height: 1.55; color: var(--gray); }
+  .step.key { border: 3px solid var(--navy); background: var(--navy-soft); }
+  .step.key p { color: var(--ink); }
+  .arr { text-align: center; color: #a8b0bb; font-size: 30px; line-height: 40px; }
+  .stop { margin-top: auto; border-radius: 22px; padding: 26px 32px; background: #fbefeb; border: 2px solid #efcfc5; font-size: 29px; line-height: 1.55; }
+  .stop b { color: var(--warn); }
+
+  /* 4장 */
+  .checks { list-style: none; margin-top: 26px; }
+  .checks li { display: flex; gap: 20px; align-items: flex-start; font-size: 30px; line-height: 1.55; padding: 20px 0; border-bottom: 2px solid #eef1f4; }
+  .checks li:last-child { border-bottom: 0; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--navy-soft); color: var(--navy); font-size: 24px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .checks small { display: block; font-size: 24px; color: #8a94a1; margin-top: 6px; }
+  .split { margin-top: auto; }
+  .split p { font-size: 28px; line-height: 1.6; color: var(--ink); margin-top: 12px; }
+  .split small { display: block; font-size: 23px; color: #8a94a1; margin-top: 10px; }
+
+  /* 5장 */
+  .fix { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; margin-top: 22px; }
+  .fix + .fix { margin-top: 16px; }
+  .fix > div { padding: 22px 26px; font-size: 27px; line-height: 1.5; }
+  .fix .bad { background: var(--bg-soft); color: var(--gray); }
+  .fix .bad::before { content: "실수"; display: block; font-size: 22px; font-weight: 700; color: var(--warn); margin-bottom: 6px; }
+  .fix .good { background: #fff; }
+  .fix .good::before { content: "바로잡기"; display: block; font-size: 22px; font-weight: 700; color: var(--ok); margin-bottom: 6px; }
+  .fix small { display: block; font-size: 22px; color: #8a94a1; margin-top: 6px; }
+  .basis { margin-top: auto; background: var(--navy); color: #fff; border-radius: 24px; padding: 28px 34px; }
+  .basis .label { color: #b9c7da; }
+  .basis ul { list-style: none; margin-top: 12px; }
+  .basis li { font-size: 23px; line-height: 1.6; color: #e3eaf3; }
+  .basis li b { color: #fff; }
+
+  footer { margin-top: 30px; font-size: 24px; color: #9aa3ae; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="slide" id="s1">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 01</span><span class="page">1 / 5</span></div>
+  <h1>일본 본사에 배당 보낼 때,<br><em>원천징수는 몇 %?</em></h1>
+  <p class="sub">국내세율 20%를 그대로 떼는 것이 아닙니다. 한일 조세조약으로 5% 또는 15%까지 낮아지지만, 서류와 지분 요건을 먼저 봐야 합니다.</p>
+  <div class="card navy answer">
+    <div class="label">한 줄 결론</div>
+    <p class="big">신청서를 받고, 일본 법인이 의결권 주식 <b>25% 이상</b>을 <b>6개월</b> 보유했으면 <b>5%</b> · 아니면 <b>15%</b></p>
+  </div>
+  <div class="chips">
+    <span class="chip">배당</span><span class="chip">한일 조세조약 제10조</span><span class="chip">제한세율 적용신청서</span><span class="chip">법인세법 §98의6</span>
+  </div>
+  <footer><span>2026년 10월 기준</span><span>넘겨 보세요 ›</span></footer>
+</section>
+
+<!-- 2. 세율 -->
+<section class="slide" id="s2">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 01</span><span class="page">2 / 5</span></div>
+  <h2><span class="no">1</span>세율 한눈에</h2>
+  <div class="stack">
+    <div class="card soft">
+      <div class="label">조약 적용 전 · 국내법</div>
+      <div class="rate"><span class="pct">20%</span><span class="what">법인세 원천징수<br>+ 지방소득세(법인세의 10%)</span></div>
+      <p class="ref">법인세법 §98①2호 · 지방세법 §103의52①</p>
+    </div>
+    <div class="card navy">
+      <div class="label">조약 적용 후 · 한일 조세조약 제10조②</div>
+      <div class="rate"><span class="pct">5%</span><span class="what">일본 법인이 의결권 주식 25% 이상을<br>정해진 6개월 동안 보유</span></div>
+      <div class="rate"><span class="pct">15%</span><span class="what">그 밖의 경우<br>(지분 미달, 개인 주주 등)</span></div>
+    </div>
+  </div>
+  <div class="gains">
+    <div class="gain"><b>지방소득세 포함</b><p>5%·15%는 지방소득세까지 합친 한도입니다.</p></div>
+    <div class="gain"><b>수익적 소유자</b><p>배당을 실제로 가져가는 일본 거주자여야 합니다.</p></div>
+    <div class="gain"><b>납부 기한</b><p>원천징수한 달의 다음 달 10일까지 냅니다.</p></div>
+  </div>
+  <footer><span>근거: 조약 제2조·제10조 · 법인세법 §98①</span><span>›</span></footer>
+</section>
+
+<!-- 3. 절차 -->
+<section class="slide" id="s3">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 01</span><span class="page">3 / 5</span></div>
+  <h2><span class="no">2</span>이렇게 처리합니다</h2>
+  <div class="flow">
+    <div class="step"><div class="n">STEP 1</div><h3>신청서 받기</h3><p>지급 전에 일본 법인에게서 <b>제한세율 적용신청서</b>와 실질귀속자임을 증명하는 서류를 받습니다.</p></div>
+    <div class="arr">↓</div>
+    <div class="step"><div class="n">STEP 2</div><h3>지분 확인</h3><p>배당결의일이 속하는 사업연도의 종료 직전 6개월 동안 의결권 주식 25% 이상을 보유했는지 봅니다.</p></div>
+    <div class="arr">↓</div>
+    <div class="step"><div class="n">STEP 3</div><h3>원천징수</h3><p>5% 또는 15%로 떼되, 지방소득세까지 합쳐 그 한도를 넘지 않게 합니다.</p></div>
+    <div class="arr">↓</div>
+    <div class="step key"><div class="n">STEP 4</div><h3>납부·영수증</h3><p>다음 달 10일까지 납부하고, 일본 법인에 원천징수영수증을 발급합니다.</p></div>
+  </div>
+  <div class="stop"><b>신청서를 못 받았다면</b> — 제한세율을 쓰지 않고 국내세율 20%로 원천징수해야 합니다. <span style="color:#8a94a1;font-size:24px">법인세법 §98의6③</span></div>
+  <footer><span>근거: 법인세법 §98①·⑬, §98의6①·③</span><span>›</span></footer>
+</section>
+
+<!-- 4. 확인할 것 -->
+<section class="slide" id="s4">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 01</span><span class="page">4 / 5</span></div>
+  <h2><span class="no">3</span>꼭 확인할 것</h2>
+  <ul class="checks">
+    <li><span><b>「6개월」은 배당결의일이 속하는 사업연도 기준</b>입니다. 배당 재원이 생긴 사업연도가 아닙니다.<small>예) 12월 결산, 2026년 3월 결의 → 2026.7.1.~12.31. 보유 여부를 봅니다</small></span></li>
+    <li><span>6개월은 그 사업연도 <b>종료일부터 거꾸로</b> 셉니다.<small>조심 2017부0968</small></span></li>
+    <li><span>지분은 <b>직접 보유</b> 기준입니다. 실체가 있는 중간 법인을 거친 간접 보유는 넣지 않습니다.<small>적부-국세청-2019-0182</small></span></li>
+    <li><span>5%는 주주가 <b>법인</b>일 때만입니다. 일본 개인 주주는 15%입니다.<small>서면-2022-국제세원-3197</small></span></li>
+  </ul>
+  <div class="card soft split">
+    <div class="label">판단이 갈린 적 있음</div>
+    <p>과세관청과 조세심판원은 「결의일이 속하는 사업연도」로 봅니다. 하급심에는 「배당 대상 사업연도」로 본 판결도 있지만, 실무는 결의일 기준으로 판단해 두는 것이 안전합니다.</p>
+    <small>적부-국세청-2019-0174 · 조심 2017중0589 · 반대 취지 하급심(서울고법(춘천) 2018누246)은 적부-국세청-2019-0174 결정문에서 재인용</small>
+  </div>
+  <footer><span>근거: 한일 조세조약 제10조②가목</span><span>›</span></footer>
+</section>
+
+<!-- 5. 흔한 실수 -->
+<section class="slide" id="s5">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 01</span><span class="page">5 / 5</span></div>
+  <h2><span class="no">4</span>흔한 실수</h2>
+  <div class="fix">
+    <div class="bad">신청서 없이 「본사니까 5%」로 처리</div>
+    <div class="good">지급 전에 신청서부터. 없으면 <span class="nb">20%로</span> 원천징수<small>법인세법 §98의6③</small></div>
+  </div>
+  <div class="fix">
+    <div class="bad">사업연도 말에 지분을 줄였는데 그해 결의한 배당에 5% 적용</div>
+    <div class="good">지분이 40%→19.9%로 줄어든 사례에서 15%로 추징 예고, 불복도 기각<small>적부-국세청-2019-0174</small></div>
+  </div>
+  <div class="fix last">
+    <div class="bad">20%로 떼고 그냥 끝냄</div>
+    <div class="good">원천징수된 날이 속하는 달의 다음 달 11일부터 5년 안에 경정청구할 수 있습니다<small>법인세법 §98의6⑤</small></div>
+  </div>
+  <div class="basis">
+    <div class="label">근거</div>
+    <ul>
+      <li><b>조약</b> 한일 조세조약 제2조(대상조세)·제10조(배당)</li>
+      <li><b>법령</b> 법인세법 §98①·⑬, §98의6①·③·⑤ · 지방세법 §103의52</li>
+      <li><b>결정·해석</b> 적부-국세청-2019-0174(2020.2.19.) · 적부-국세청-2019-0182(2020.1.15.) · 조심 2017중0589(2017.4.24.) · 조심 2017부0968(2017.4.14.) · 서면-2022-국제세원-3197(2022.12.14.)</li>
+    </ul>
+  </div>
+  <footer><span>2026년 10월 기준 · 실무 참고용이며 개별 사안은 검토가 필요합니다</span></footer>
+</section>
+
+<script>
+  var n = location.hash.replace('#', '');
+  if (n) { document.body.classList.add('one'); var s = document.getElementById('s' + n); if (s) s.classList.add('on'); }
+</script>
+</body>
+</html>
