@@ -70,7 +70,7 @@ h1{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-top:14px}
 <input class="search" id="q" type="search" placeholder="찾기 — 예: 경영자문료, 주재원, 배당">
 <ul class="list" id="list">@ITEMS@</ul>
 <p class="none" id="none">찾는 카드가 없습니다.</p>
-<p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>근거 확인 기준일 뒤의 개정·새 해석·판례는 반영되지 않았을 수 있습니다.</p>
+<p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>기준일 뒤의 개정·새 해석·판례는 반영되지 않았을 수 있습니다.</p>
 </div>
 <script>
 @TODAY@
@@ -119,7 +119,7 @@ VIEWER = """<!doctype html>
 <div class="ctl"><button id="p" aria-label="이전">‹</button><span class="dots" id="d">@DOTS@</span><button id="n" aria-label="다음">›</button></div>
 <p class="info">@INFO@</p>
 <a class="next" href="../../">다른 카드 보기</a>
-<p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>근거 확인 기준일 뒤의 개정·새 해석·판례는 반영되지 않았을 수 있습니다.</p>
+<p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>기준일 뒤의 개정·새 해석·판례는 반영되지 않았을 수 있습니다.</p>
 </div>
 <script>
 var t=document.getElementById('t'),dots=[].slice.call(document.querySelectorAll('#d i')),N=dots.length,p=document.getElementById('p'),n=document.getElementById('n');
