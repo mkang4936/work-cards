@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>외투법인 실무 카드 04</title>
+<style>
+  :root {
+    --navy: #1f3a5f;
+    --navy-soft: #e9eef5;
+    --ink: #1d232b;
+    --gray: #5b6573;
+    --line: #dde2e8;
+    --bg-soft: #f6f7f9;
+    --ok: #2f7a5b;
+    --warn: #a4462f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1080px;
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .slide {
+    width: 1080px; height: 1350px; padding: 64px 76px 48px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  body.one .slide { display: none; border-bottom: 0; }
+  body.one .slide.on { display: flex; }
+  .slide > * { flex-shrink: 0; }
+
+  /* 머리 */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 26px; font-weight: 600; color: var(--ok);
+    background: #eaf4ef; border-radius: 999px; padding: 10px 24px;
+  }
+  .badge::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+  .page { font-size: 26px; color: #9aa3ae; font-weight: 600; }
+  .prev { margin-top: 34px; font-size: 26px; line-height: 1.5; color: var(--gray); border-left: 6px solid var(--navy); padding: 2px 0 2px 18px; }
+  .prev b { color: var(--navy); }
+  h1 { font-size: 72px; font-weight: 800; letter-spacing: -2px; line-height: 1.25; margin-top: 30px; }
+  h1 em { font-style: normal; color: var(--navy); }
+  .sub { font-size: 32px; color: var(--gray); margin-top: 26px; line-height: 1.6; }
+
+  h2 {
+    font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px;
+    letter-spacing: -1px; margin-top: 36px;
+  }
+  h2 .no {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff;
+    font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .lead { font-size: 30px; color: var(--gray); margin-top: 18px; line-height: 1.55; }
+  .lead b { color: var(--ink); }
+
+  .card { border: 2px solid var(--line); border-radius: 24px; padding: 30px 36px; }
+  .label { font-size: 26px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; }
+  .navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .navy .label { color: #b9c7da; }
+  .soft { background: var(--bg-soft); }
+  .nb { white-space: nowrap; }
+  .ref { font-size: 23px; color: #8a94a1; margin-top: 10px; line-height: 1.5; }
+  .navy .ref { color: #9fb0c6; }
+
+  /* 표지 */
+  .answer { margin-top: auto; }
+  .answer .big { font-size: 37px; font-weight: 700; line-height: 1.55; margin-top: 14px; }
+  .answer .big b { color: #fff; background: rgba(255,255,255,0.14); border-radius: 10px; padding: 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .chip { font-size: 25px; padding: 10px 20px; border-radius: 14px; background: var(--bg-soft); border: 2px solid var(--line); }
+
+  /* 요건 격자 */
+  .reqs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+  .req { border: 2px solid var(--line); border-radius: 22px; padding: 22px 26px; }
+  .req .k { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; }
+  .req b { display: block; font-size: 33px; margin-top: 4px; }
+  .req p { font-size: 25px; line-height: 1.45; color: var(--gray); margin-top: 8px; }
+  .req small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; }
+  .bottom { margin-top: auto; }
+  .reqs, .two, .rows, .checks, .flow { margin-bottom: 18px; }
+  .bottom p { font-size: 26px; line-height: 1.55; margin-top: 10px; }
+  .bottom p + p { margin-top: 10px; }
+
+  /* 목록 */
+  .ul { list-style: none; margin-top: 14px; }
+  .ul li { font-size: 26px; line-height: 1.5; padding-left: 26px; position: relative; margin-top: 8px; }
+  .ul li::before { content: "·"; position: absolute; left: 6px; font-weight: 800; }
+  .navy .ul li { color: #e3eaf3; }
+  .navy .ul li b { color: #fff; }
+
+  /* 꼭 확인할 것 */
+  .checks { list-style: none; margin-top: 18px; }
+  .checks li { display: flex; gap: 20px; align-items: flex-start; font-size: 28px; line-height: 1.5; padding: 14px 0; border-bottom: 2px solid #eef1f4; }
+  .checks li:last-child { border-bottom: 0; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-soft); color: var(--navy); font-size: 22px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .checks small { display: block; font-size: 22px; color: #8a94a1; margin-top: 4px; }
+  .split { margin-top: auto; }
+  .split p { font-size: 26px; line-height: 1.6; color: var(--ink); margin-top: 10px; }
+  .split small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; line-height: 1.5; }
+  .tag-split { display: inline-block; font-size: 22px; font-weight: 700; color: var(--warn); background: #fbefeb; border: 2px solid #efcfc5; border-radius: 10px; padding: 2px 12px; margin-left: 10px; vertical-align: 2px; }
+
+  /* 흔한 실수 */
+  .fix { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; margin-top: 20px; }
+  .fix + .fix { margin-top: 12px; }
+  .fix.last { margin-bottom: 20px; }
+  .fix > div { padding: 14px 22px; font-size: 25px; line-height: 1.45; }
+  .fix .bad { background: var(--bg-soft); color: var(--gray); }
+  .fix .bad::before { content: "실수"; display: block; font-size: 21px; font-weight: 700; color: var(--warn); margin-bottom: 4px; }
+  .fix .good { background: #fff; }
+  .fix .good::before { content: "바로잡기"; display: block; font-size: 21px; font-weight: 700; color: var(--ok); margin-bottom: 4px; }
+  .fix small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .basis { margin-top: auto; background: var(--navy); color: #fff; border-radius: 24px; padding: 20px 30px; }
+  .basis .label { color: #b9c7da; }
+  .basis ul { list-style: none; margin-top: 10px; }
+  .basis li { font-size: 21px; line-height: 1.5; color: #e3eaf3; }
+  .basis li b { color: #fff; }
+  .nextline { margin-top: 16px; display: flex; gap: 16px; align-items: baseline; font-size: 25px; line-height: 1.45; background: var(--navy-soft); border-radius: 16px; padding: 16px 26px; }
+  .nextline .k { flex: none; font-weight: 700; color: var(--navy); }
+
+  footer { margin-top: 26px; font-size: 23px; color: #9aa3ae; display: flex; justify-content: space-between; gap: 20px; }
+
+  /* 판정표 */
+  .rows { margin-top: 24px; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; }
+  .rows .r { display: grid; grid-template-columns: 1fr 250px; gap: 22px; padding: 20px 28px; border-bottom: 2px solid #eef1f4; align-items: center; }
+  .rows .r:last-child { border-bottom: 0; }
+  .rows .q { font-size: 27px; line-height: 1.45; }
+  .rows .q small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .rows .a { font-size: 27px; font-weight: 800; line-height: 1.35; }
+  .rows .a.no { color: var(--ok); }
+  .rows .a.yes { color: var(--warn); }
+  .rows .head { background: var(--bg-soft); padding: 14px 28px; font-size: 22px; font-weight: 700; color: var(--gray); }
+
+  /* 두 갈래 */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .two .card { padding: 26px 28px; }
+  .two b.t { display: block; font-size: 36px; margin-top: 6px; }
+  .two p { font-size: 25px; line-height: 1.5; margin-top: 10px; }
+  .two .navy p { color: #e3eaf3; }
+  .two .soft p { color: var(--ink); }
+
+  /* 처리 순서 */
+  .flow { display: flex; flex-direction: column; margin-top: 24px; }
+  .step { border: 2px solid var(--line); border-radius: 22px; padding: 16px 28px; display: grid; grid-template-columns: 112px 1fr; gap: 4px 20px; }
+  .step .n { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; padding-top: 7px; }
+  .step h3 { font-size: 33px; font-weight: 800; }
+  .step p { grid-column: 2; font-size: 25px; line-height: 1.5; color: var(--gray); }
+  .step p b { color: var(--ink); }
+  .step.key { border: 3px solid var(--navy); background: var(--navy-soft); }
+  .step.key p { color: var(--ink); }
+  .arr { text-align: center; color: #a8b0bb; font-size: 24px; line-height: 26px; }
+  .stop { margin-top: auto; border-radius: 22px; padding: 22px 30px; background: #fbefeb; border: 2px solid #efcfc5; font-size: 26px; line-height: 1.5; }
+  .stop b { color: var(--warn); }
+  .stop .ref { display: inline; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="slide" id="s1">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 04 · 2026.11.03</span><span class="page">1 / 5</span></div>
+  <p class="prev">경영자문료 시리즈 ③ · 카드 03 <b>부가세 대리납부 여부</b>에 이어 법인세에서 비용으로 인정받는 요건을 봅니다</p>
+  <h1>본사 경영자문료,<br><em>손금 인정 요건과 정상가격</em></h1>
+  <p class="sub">한국 자회사가 외국 본사(국외특수관계인)에 경영자문료·경영지원료를 지급하고 비용으로 처리하는 경우입니다. 국제조세조정법의 용역거래 규정으로 판단합니다.</p>
+  <div class="card navy answer">
+    <div class="label">한 줄 결론</div>
+    <p class="big">현행 시행령은 <b>사전 약정</b> · <b>편익</b> · <b>중복 아님</b> · <b class="nb">증빙 보관</b> 중 하나라도 갖추지 않으면 손금에 산입하지 않는다고 정합니다. 요건을 갖춰도 대가가 정상가격을 넘으면 정상가격을 기준으로 과세조정합니다.</p>
+  </div>
+  <div class="chips">
+    <span class="chip">경영자문료·경영지원료</span><span class="chip">국조법 시행령 §12⑦</span><span class="chip">정상가격</span><span class="chip">저부가가치용역 원가+5%</span><span class="chip">본사 공통비 배분</span><span class="chip">임시유보·배당 처분</span>
+  </div>
+  <footer><span>근거 확인 기준 2026.10.23</span><span>넘겨 보세요 ›</span></footer>
+</section>
+
+<!-- 2. 손금 요건 -->
+<section class="slide" id="s2">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 04 · 2026.11.03</span><span class="page">2 / 5</span></div>
+  <h2><span class="no">1</span>손금 요건 네 가지</h2>
+  <p class="lead">아래 요건 중 <b>하나라도 갖추지 않으면</b> 그 용역 비용을 손금에 산입하지 않습니다.</p>
+  <div class="reqs">
+    <div class="req"><div class="k">요건 1</div><b>사전 약정과 실제 제공</b><p>본사가 사전에 약정(용역계약)을 체결하고 그에 따라 용역을 실제로 제공</p><small>시행령 §12⑦1호</small></div>
+    <div class="req"><div class="k">요건 2</div><b>편익</b><p>그 용역으로 추가 수익이 발생하거나 비용이 절감되기를 기대할 수 있음</p><small>시행령 §12⑦2호</small></div>
+    <div class="req"><div class="k">요건 3</div><b>중복 아님</b><p>자회사가 받는 용역과 같은 용역을 다른 특수관계인이 자체 수행하거나 제3자가 다른 특수관계인을 위해 제공하고 있지 않음(일시 중복 예외)</p><small>시행령 §12⑦3호</small></div>
+    <div class="req"><div class="k">요건 4</div><b>증빙 보관</b><p>요건 1·2의 사실을 증명하는 문서를 보관·비치</p><small>시행령 §12⑦4호</small></div>
+  </div>
+  <div class="card soft bottom" style="padding:22px 30px">
+    <div class="label">대가 수준은 따로 봅니다</div>
+    <p>자회사는 정상가격을 기준으로 조정해 신고할 수 있고(거래가격 조정신고서), 과세당국은 정상가격을 기준으로 결정·경정할 수 있습니다.<span class="ref nb"> 국조법 §6·§7①</span></p>
+    <p>이 용역 대가에는 법인세법 §52 부당행위계산부인을 적용하지 않습니다. 다만 자산 증여 등에는 적용합니다.<span class="ref nb"> 국조법 §4②</span></p>
+  </div>
+  <footer><span>국조법 = 국제조세조정에 관한 법률</span><span>›</span></footer>
+</section>
+
+<!-- 3. 정상가격 -->
+<section class="slide" id="s3">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 04 · 2026.11.03</span><span class="page">3 / 5</span></div>
+  <h2><span class="no">2</span>정상가격 — 원가와 간편법</h2>
+  <p class="lead">정상가격은 국외특수관계인이 아닌 자와의 통상적인 거래에서 적용하거나 적용할 것으로 판단되는 가격입니다.<span class="ref nb"> 국조법 §2①5호</span></p>
+  <div class="card soft" style="margin-top:22px">
+    <div class="label">원가에 넣는 범위 · 원가가산·거래순이익률방법과 간편법</div>
+    <ul class="ul">
+      <li>용역 제공을 위해 직접 또는 간접으로 발생한 비용을 모두 원가에 포함합니다.</li>
+      <li>본사가 제3자에게 맡긴 용역 대금을 그대로 재청구하는 부분에는 통상이윤을 붙이지 않고, 본사가 직접 수행한 활동의 원가에만 붙입니다(용역 내용·거래 상황·관행에 비추어 합리적이면 예외).</li>
+    </ul>
+    <p class="ref">시행령 §12①1호·2호</p>
+  </div>
+  <div class="card navy" style="margin-top:18px">
+    <div class="label">저부가가치용역 간편법 · 원가에 5% 가산</div>
+    <ul class="ul">
+      <li>아래 요건을 모두 갖춘 용역에 <b>원가에 5%를 가산한 금액</b>을 적용하면 그 금액을 정상가격으로 봅니다.</li>
+      <li>핵심사업과 직접 관련되지 않는 <b>지원적 용역</b>. 연구개발, 천연자원 탐사·채취·가공, 원재료 구입·제조·판매·마케팅·홍보, 금융·보험·재보험은 제외</li>
+      <li>독특하고 가치 있는 무형자산을 사용·창출하지 않고, 본사가 중대한 위험을 부담하거나 관리·통제하지 않음</li>
+      <li>본사와 자회사 모두 특수관계 없는 제3자와 유사한 용역거래를 하지 않음</li>
+      <li>그 과세연도 저부가가치용역 대가(원가+5%)의 합계가 <b>자회사 <span class="nb">매출액의 5%와</span> 영업비용의 15% 중 작은 금액</b>을 넘으면 간편법을 적용하지 않습니다.</li>
+    </ul>
+    <p class="ref">시행령 §12②·③ · 시행규칙 §4</p>
+  </div>
+  <footer><span>간편법 요건을 갖추지 못하면 일반 정상가격 산출방법(국조법 §8①)으로 판단합니다</span><span>›</span></footer>
+</section>
+
+<!-- 4. 꼭 확인할 것 -->
+<section class="slide" id="s4">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 04 · 2026.11.03</span><span class="page">4 / 5</span></div>
+  <h2><span class="no">3</span>꼭 확인할 것</h2>
+  <ul class="checks">
+    <li><span>용역계약은 <b>용역이 시작되기 전에</b>, 용역을 제공하는 <b>본사와</b> 체결합니다.<small>2018년 용역에 대해 2019.1.1.부터 효력이 생기는 계약은 사전 약정으로 보지 않았고, 이메일에서도 약정 내용이 확인되지 않음 · 조심2022중6820</small></span></li>
+    <li><span>본사 청구서의 <b>원가 내역과 산출 근거</b>를 받아 검토하고 보관합니다.<small>원가 자료를 대부분 내지 못해 정상가격 초과액 부인이 유지됨 · 조심2019서4220</small></span></li>
+    <li><span>본사가 여러 계열사 비용을 나누어 청구하면 <b>배분 자료</b>를 받아 둡니다. 배분 기준을 정한 조문은 없습니다.<small>사무직 직원 수 비율 배분을 합리적이라고 본 판결(부산지법 2013구합21114), 편익과 관련 없는 비용을 미리 제외한 공통 IT 비용 배분액에 편익 요건을 인정한 판결(수원지법 2024구합68386) — 모두 옛 시행령 사안</small></span></li>
+    <li><span>과세당국이 요구하면 용역거래계약서, 지출항목별 명세서, 용역 제공 일정·인력 자료, 배분 자료를 <b>요구받은 날부터 60일 이내</b>에 제출해야 합니다.<small>국조법 §16⑤ · 시행규칙 §28①</small></span></li>
+  </ul>
+  <div class="card soft split">
+    <div class="label">판단이 갈린 적 있음<span class="tag-split">1심 판결 갈림</span></div>
+    <p>요건 하나가 빠지면 전액 손금불산입인가 — 같은 법원에서 요건을 갖추지 못한 거래는 반대해석상 손금불산입 대상이라고 본 판결과, 독자적 손금 요건이 아니어서 법인세법 §19②의 요건을 갖추고 정상가격 범위 안이면 손금이 될 수 있다고 본 판결이 나뉘었습니다. 현행 시행령 §12⑦은 손금불산입을 문언으로 정하고 있어 요건을 갖춰 두는 것이 안전합니다.</p>
+    <small>수원지법 2024구합68386 · 수원지법 2024구합68669(조심2022중6820과 같은 사안) — 모두 옛 시행령 §6의2 사안의 1심. 대법원 판단은 확인되지 않았습니다</small>
+  </div>
+  <footer><span>근거: 국조법 §16 · 시행령 §12⑦ · 시행규칙 §28</span><span>›</span></footer>
+</section>
+
+<!-- 5. 흔한 실수 -->
+<section class="slide" id="s5">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 04 · 2026.11.03</span><span class="page">5 / 5</span></div>
+  <h2><span class="no">4</span>흔한 실수</h2>
+  <div class="fix">
+    <div class="bad">용역이 시작된 뒤에 용역계약을 체결함</div>
+    <div class="good">사전 약정으로 인정되지 않을 수 있습니다. 용역 개시 전에 체결합니다<small>조심2022중6820 · 수원지법 2024구합68386</small></div>
+  </div>
+  <div class="fix">
+    <div class="bad">용역계약 없이 본사 경비를 「분담금」으로 배분받아 비용 처리</div>
+    <div class="good">배분된 경비 자체는 손금이 아니고, 사전 용역계약에 따른 용역 대가여야 합니다<small><span class="nb">국업46522-79</span>(2000.2.10.)</small></div>
+  </div>
+  <div class="fix last">
+    <div class="bad">정상가격 초과분을 손금불산입만 하고 끝냄</div>
+    <div class="good">반환 확인 전까지 임시유보로 두고, 신고일(경정이면 임시유보 처분 통지서를 받은 날)부터 90일 안에 본사가 반환이자를 더해 돌려준 사실이 반환 확인서로 확인되지 않으면 배당으로 처분되어 원천징수합니다<small>국조법 §13① · 시행령 §22~§24</small></div>
+  </div>
+  <div class="basis">
+    <div class="label">근거</div>
+    <ul>
+      <li><b>법령</b> 국조법 §2·§4·§6·§7·§8·§13·§16 · 시행령 §12·§22~§24 · 시행규칙 §4·§28 · 법인세법 §19·§93·§98</li>
+      <li><b>결정·판결·해석</b> 조심2022중6820 · 조심2019서4220 · 수원지법 2024구합68386(2026.4.23.) · 수원지법 2024구합68669(2026.6.17.) · 부산지법 2013구합21114 · <span class="nb">국업46522-79</span>(2000.2.10.)</li>
+    </ul>
+  </div>
+  <p class="nextline"><span class="k">다음 카드 · 11.06(금) · 05</span><span>경영자문료 송금과 외화 환산</span></p>
+  <footer><span>근거 확인 기준 2026.10.23 · 실무 참고용이며 개별 사안은 검토가 필요합니다</span></footer>
+</section>
+
+<script>
+  var n = location.hash.replace('#', '');
+  if (n) { document.body.classList.add('one'); var s = document.getElementById('s' + n); if (s) s.classList.add('on'); }
+</script>
+</body>
+</html>
