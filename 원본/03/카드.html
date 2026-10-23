@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>외투법인 실무 카드 03</title>
+<style>
+  :root {
+    --navy: #1f3a5f;
+    --navy-soft: #e9eef5;
+    --ink: #1d232b;
+    --gray: #5b6573;
+    --line: #dde2e8;
+    --bg-soft: #f6f7f9;
+    --ok: #2f7a5b;
+    --warn: #a4462f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1080px;
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .slide {
+    width: 1080px; height: 1350px; padding: 64px 76px 48px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  body.one .slide { display: none; border-bottom: 0; }
+  body.one .slide.on { display: flex; }
+  .slide > * { flex-shrink: 0; }
+
+  /* 머리 */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 26px; font-weight: 600; color: var(--ok);
+    background: #eaf4ef; border-radius: 999px; padding: 10px 24px;
+  }
+  .badge::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+  .page { font-size: 26px; color: #9aa3ae; font-weight: 600; }
+  .prev { margin-top: 34px; font-size: 26px; line-height: 1.5; color: var(--gray); border-left: 6px solid var(--navy); padding: 2px 0 2px 18px; }
+  .prev b { color: var(--navy); }
+  h1 { font-size: 72px; font-weight: 800; letter-spacing: -2px; line-height: 1.25; margin-top: 30px; }
+  h1 em { font-style: normal; color: var(--navy); }
+  .sub { font-size: 32px; color: var(--gray); margin-top: 26px; line-height: 1.6; }
+
+  h2 {
+    font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px;
+    letter-spacing: -1px; margin-top: 36px;
+  }
+  h2 .no {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff;
+    font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .lead { font-size: 30px; color: var(--gray); margin-top: 18px; line-height: 1.55; }
+  .lead b { color: var(--ink); }
+
+  .card { border: 2px solid var(--line); border-radius: 24px; padding: 30px 36px; }
+  .label { font-size: 26px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; }
+  .navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .navy .label { color: #b9c7da; }
+  .soft { background: var(--bg-soft); }
+  .nb { white-space: nowrap; }
+  .ref { font-size: 23px; color: #8a94a1; margin-top: 10px; line-height: 1.5; }
+  .navy .ref { color: #9fb0c6; }
+
+  /* 표지 */
+  .answer { margin-top: auto; }
+  .answer .big { font-size: 37px; font-weight: 700; line-height: 1.55; margin-top: 14px; }
+  .answer .big b { color: #fff; background: rgba(255,255,255,0.14); border-radius: 10px; padding: 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .chip { font-size: 25px; padding: 10px 20px; border-radius: 14px; background: var(--bg-soft); border: 2px solid var(--line); }
+
+  /* 요건 격자 */
+  .reqs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+  .req { border: 2px solid var(--line); border-radius: 22px; padding: 22px 26px; }
+  .req .k { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; }
+  .req b { display: block; font-size: 33px; margin-top: 4px; }
+  .req p { font-size: 25px; line-height: 1.45; color: var(--gray); margin-top: 8px; }
+  .req small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; }
+  .bottom { margin-top: auto; }
+  .reqs, .two, .rows, .checks, .flow { margin-bottom: 18px; }
+  .bottom p { font-size: 26px; line-height: 1.55; margin-top: 10px; }
+  .bottom p + p { margin-top: 10px; }
+
+  /* 목록 */
+  .ul { list-style: none; margin-top: 14px; }
+  .ul li { font-size: 26px; line-height: 1.5; padding-left: 26px; position: relative; margin-top: 8px; }
+  .ul li::before { content: "·"; position: absolute; left: 6px; font-weight: 800; }
+  .navy .ul li { color: #e3eaf3; }
+  .navy .ul li b { color: #fff; }
+
+  /* 꼭 확인할 것 */
+  .checks { list-style: none; margin-top: 18px; }
+  .checks li { display: flex; gap: 20px; align-items: flex-start; font-size: 28px; line-height: 1.5; padding: 14px 0; border-bottom: 2px solid #eef1f4; }
+  .checks li:last-child { border-bottom: 0; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-soft); color: var(--navy); font-size: 22px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .checks small { display: block; font-size: 22px; color: #8a94a1; margin-top: 4px; }
+  .split { margin-top: auto; }
+  .split p { font-size: 26px; line-height: 1.6; color: var(--ink); margin-top: 10px; }
+  .split small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; line-height: 1.5; }
+  .tag-split { display: inline-block; font-size: 22px; font-weight: 700; color: var(--warn); background: #fbefeb; border: 2px solid #efcfc5; border-radius: 10px; padding: 2px 12px; margin-left: 10px; vertical-align: 2px; }
+
+  /* 흔한 실수 */
+  .fix { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; margin-top: 20px; }
+  .fix + .fix { margin-top: 12px; }
+  .fix.last { margin-bottom: 20px; }
+  .fix > div { padding: 14px 22px; font-size: 25px; line-height: 1.45; }
+  .fix .bad { background: var(--bg-soft); color: var(--gray); }
+  .fix .bad::before { content: "실수"; display: block; font-size: 21px; font-weight: 700; color: var(--warn); margin-bottom: 4px; }
+  .fix .good { background: #fff; }
+  .fix .good::before { content: "바로잡기"; display: block; font-size: 21px; font-weight: 700; color: var(--ok); margin-bottom: 4px; }
+  .fix small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .basis { margin-top: auto; background: var(--navy); color: #fff; border-radius: 24px; padding: 20px 30px; }
+  .basis .label { color: #b9c7da; }
+  .basis ul { list-style: none; margin-top: 10px; }
+  .basis li { font-size: 21px; line-height: 1.5; color: #e3eaf3; }
+  .basis li b { color: #fff; }
+  .nextline { margin-top: 16px; display: flex; gap: 16px; align-items: baseline; font-size: 25px; line-height: 1.45; background: var(--navy-soft); border-radius: 16px; padding: 16px 26px; }
+  .nextline .k { flex: none; font-weight: 700; color: var(--navy); }
+
+  footer { margin-top: 26px; font-size: 23px; color: #9aa3ae; display: flex; justify-content: space-between; gap: 20px; }
+
+  /* 판정표 */
+  .rows { margin-top: 24px; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; }
+  .rows .r { display: grid; grid-template-columns: 1fr 250px; gap: 22px; padding: 15px 28px; border-bottom: 2px solid #eef1f4; align-items: center; }
+  .rows .r:last-child { border-bottom: 0; }
+  .rows .q { font-size: 27px; line-height: 1.45; }
+  .rows .q small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .rows .a { font-size: 27px; font-weight: 800; line-height: 1.35; }
+  .rows .a.no { color: var(--ok); }
+  .rows .a.yes { color: var(--warn); }
+  .rows .a.calc { color: var(--navy); }
+  .calc4 .r { grid-template-columns: 1.55fr 1fr 1fr 1fr; gap: 12px; padding: 16px 24px; }
+  .calc4 .th { padding-top: 12px; padding-bottom: 12px; font-size: 21px; font-weight: 700; color: var(--gray); }
+  .calc4 .th div + div, .calc4 .v { text-align: right; }
+  .calc4 .q { font-size: 26px; }
+  .calc4 .v { font-size: 27px; font-weight: 700; color: var(--navy); }
+  .calc4 .v small { display: block; font-size: 20px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .calc4 .v.total { color: var(--warn); }
+  .note { font-size: 26px; line-height: 1.55; margin-top: 16px; color: var(--ink); }
+  .rows .a small { display: block; font-size: 23px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .rows .head { background: var(--bg-soft); padding: 14px 28px; font-size: 22px; font-weight: 700; color: var(--gray); }
+
+  /* 두 갈래 */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .two .card { padding: 26px 28px; }
+  .two b.t { display: block; font-size: 36px; margin-top: 6px; }
+  .two p { font-size: 25px; line-height: 1.5; margin-top: 10px; }
+  .two .navy p { color: #e3eaf3; }
+  .two .soft p { color: var(--ink); }
+
+  /* 처리 순서 */
+  .flow { display: flex; flex-direction: column; margin-top: 24px; }
+  .step { border: 2px solid var(--line); border-radius: 22px; padding: 16px 28px; display: grid; grid-template-columns: 112px 1fr; gap: 4px 20px; }
+  .step .n { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; padding-top: 7px; }
+  .step h3 { font-size: 33px; font-weight: 800; }
+  .step p { grid-column: 2; font-size: 25px; line-height: 1.5; color: var(--gray); }
+  .step p b { color: var(--ink); }
+  .step.key { border: 3px solid var(--navy); background: var(--navy-soft); }
+  .step.key p { color: var(--ink); }
+  .arr { text-align: center; color: #a8b0bb; font-size: 24px; line-height: 26px; }
+  .stop { margin-top: auto; border-radius: 22px; padding: 22px 30px; background: #fbefeb; border: 2px solid #efcfc5; font-size: 26px; line-height: 1.5; }
+  .stop b { color: var(--warn); }
+  .stop .ref { display: inline; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="slide" id="s1">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">1 / 6</span></div>
+  <p class="prev">경영자문료 시리즈 ② · 카드 02 <b>소득 구분과 원천징수 여부</b>에 이어 부가세를 봅니다</p>
+  <h1>본사 경영자문료,<br><em>부가세 대리납부 여부</em></h1>
+  <p class="sub">한국 자회사가 국내사업장이 없는 외국 본사에서 경영자문 용역을 받고 대가를 지급하는 경우입니다. 원천징수와 별개로 판단합니다.</p>
+  <div class="card navy answer">
+    <div class="label">한 줄 결론</div>
+    <p class="big">그 용역을 <b>과세사업에 사용하면</b> 대리납부하지 않습니다. <b>면세사업</b>에 사용하거나 <b>매입세액 불공제</b> 대상이면 대가를 지급할 때 본사로부터 10%를 징수해 납부합니다.</p>
+  </div>
+  <div class="chips">
+    <span class="chip">부가세 대리납부</span><span class="chip">부가가치세법 §52</span><span class="chip">면세 겸영 안분</span><span class="chip">대리납부신고서</span><span class="chip">용역 공급장소</span><span class="chip">납부지연가산세</span>
+  </div>
+  <footer><span>근거 확인 기준 2026.10.23</span><span>넘겨 보세요 ›</span></footer>
+</section>
+
+<!-- 2. 대상 판단 -->
+<section class="slide" id="s2">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">2 / 6</span></div>
+  <h2><span class="no">1</span>대리납부 대상인가</h2>
+  <p class="lead">경영자문은 면세 용역으로 열거되어 있지 않아 과세 용역입니다. 대리납부 여부는 <b>자회사가 그 용역을 어디에 사용하는지</b>로 정해집니다.</p>
+  <div class="rows">
+    <div class="head">자회사의 사용처</div>
+    <div class="r"><div class="q">과세사업에만 사용<small>부가가치세법 §52① 괄호 · <span class="nb">부가46015-16</span>(1997.1.4.)</small></div><div class="a no">대리납부 안 함</div></div>
+    <div class="r"><div class="q">면세사업에 사용<small>§52① · <span class="nb">부가46015-334</span>(1995.2.17.)</small></div><div class="a yes">대리납부</div></div>
+    <div class="r"><div class="q">과세·면세 공통 사용, 귀속 구분 불가<small>시행령 §95② — 대가 지급일이 속하는 과세기간의 총공급가액 중 면세공급가액 비율</small></div><div class="a yes">면세사업분만 안분해 대리납부</div></div>
+    <div class="r"><div class="q">과세사업이지만 §39에 따라 매입세액이 공제되지 않는 용역<small>§52① 괄호 후단 · 예) 사업과 직접 관련 없는 지출, 기업업무추진비 관련</small></div><div class="a yes">대리납부</div></div>
+  </div>
+  <div class="card soft bottom" style="padding:22px 30px">
+    <div class="label">본사가 국외에서만 수행했다면</div>
+    <p>대리납부는 국내에서 공급받은 용역만 대상이어서, 결과물(보고서 등)만 보낸 자문은 국내 공급으로 볼지부터 해석이 갈립니다(5장).<span class="ref nb"> §52①</span></p>
+    <div class="label" style="margin-top:16px">본사가 국내사업장을 두고 있다면</div>
+    <p>그 국내사업장과 관련 없이 공급하면 위 판단이 그대로 적용되고, 관련해 공급하면 대리납부 대상이 아닙니다.<span class="ref nb"> §52①2호 · 시행령 §95④</span></p>
+  </div>
+  <footer><span>근거: 부가가치세법 §26 · §39 · §52</span><span>›</span></footer>
+</section>
+
+<!-- 3. 대리납부세액 계산 -->
+<section class="slide" id="s3">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">3 / 6</span></div>
+  <h2><span class="no">2</span>대리납부세액 계산</h2>
+  <p class="lead">대가를 지급할 때 본사로부터 <b>공급가액의 10%</b>를 징수합니다. 세액은 <b>부가세를 누가 부담하는지</b>에 따라 달라집니다.</p>
+  <div class="rows calc4">
+    <div class="head">청구액 1,000만 원의 예</div>
+    <div class="r th"><div>부가세 부담</div><div>대리납부세액</div><div>본사 송금액</div><div>자회사 총부담</div></div>
+    <div class="r"><div class="q"><b>자회사</b> 부담<small>부가세 별도 · ×10%</small></div><div class="v">100만 원</div><div class="v">1,000만 원</div><div class="v total">1,100만 원</div></div>
+    <div class="r"><div class="q"><b>본사</b> 부담<small>부가세 포함 · ×10/110</small></div><div class="v">약 91만 원<small>909,090원</small></div><div class="v">약 909만 원<small>9,090,910원</small></div><div class="v total">1,000만 원</div></div>
+  </div>
+  <p class="note">부담 주체는 계약으로 정합니다. 계약에 정함이 없으면 <b>전액 송금</b>했을 때 자회사 부담, <b>부가세를 차감해 송금</b>했을 때 본사 부담으로 봅니다.<span class="ref nb"> 기본통칙 52-95…3</span></p>
+  <div class="card soft" style="margin-top:22px;padding:22px 30px">
+    <div class="label">외화로 지급하면</div>
+    <p style="font-size:26px;line-height:1.55;margin-top:10px">원화로 외화를 사서 지급하면 지급일의 <b>대고객외국환매도율</b>, 보유 외화로 지급하면 지급일의 <b>기준환율 또는 재정환율</b>로 원화 환산합니다.<span class="ref nb"> 시행령 §95③</span></p>
+  </div>
+  <div class="card soft" style="margin-top:18px;padding:22px 30px">
+    <div class="label">잠정가액으로 송금했다면</div>
+    <p style="font-size:26px;line-height:1.55;margin-top:10px">연말에 차액을 더하거나 차감해 정산했다면 <b>실제 지급하는 금액</b>을 기준으로 대리납부합니다.<span class="ref nb"> 부가가치세과-635(2011.6.17.)</span></p>
+  </div>
+  <footer style="margin-top:auto"><span>근거: 부가가치세법 §30 · §52① · 시행령 §95③ · 기본통칙 52-95…3</span><span>›</span></footer>
+</section>
+
+<!-- 4. 신고와 납부 -->
+<section class="slide" id="s4">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">4 / 6</span></div>
+  <h2><span class="no">3</span>신고와 납부</h2>
+  <p class="lead"><b>대리납부신고서</b>와 함께 징수한 세액을 징수한 사업장 또는 주소지 관할 세무서에 납부합니다. 기한은 대가를 지급한 달로 정해집니다.</p>
+  <div class="rows">
+    <div class="head">대가를 지급한 달 → 납부 기한</div>
+    <div class="r"><div class="q">1~3월</div><div class="a calc">4월 25일</div></div>
+    <div class="r"><div class="q">4~6월</div><div class="a calc">7월 25일</div></div>
+    <div class="r"><div class="q">7~9월</div><div class="a calc">10월 25일</div></div>
+    <div class="r"><div class="q">10~12월</div><div class="a calc">다음 해 1월 25일</div></div>
+  </div>
+  <p class="ref">예정신고기간에 지급한 분을 확정신고 때 내면 가산세 대상으로 본 해석 · <span class="nb">재소비46015-159</span>(2003.6.9.)</p>
+  <div class="stop"><b>내지 않거나 적게 내면</b> 대리납부도 원천징수와 같은 <b>원천징수 등 납부지연가산세</b>(국세기본법)가 붙습니다 — 미납세액의 3%에 미납세액 × 경과일수 × 10만분의 22를 더합니다(이 둘의 합계는 미납세액의 10% 한도). <span class="ref">국세기본법 §47의5①·②3호</span></div>
+  <footer><span>근거: 부가가치세법 §48 · §49 · §52② · 시행령 §95①</span><span>›</span></footer>
+</section>
+
+<!-- 5. 꼭 확인할 것 -->
+<section class="slide" id="s5">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">5 / 6</span></div>
+  <h2><span class="no">4</span>꼭 확인할 것</h2>
+  <ul class="checks">
+    <li><span>대리납부 의무가 없는데 낸 세액은 <b>매입세액으로 공제하는 규정이 없습니다</b>. 착오로 낸 세액은 환급 청구 대상으로 본 해석이 있습니다(절차는 해석이 갈림).<small>§38①1호가 매입세액에 넣는 대리납부세액은 사업양수 대리납부(§52④)뿐 · <span class="nb">서면인터넷방문상담3팀-434</span>(2006.3.7.)</small></span></li>
+    <li><span>카드 02에서 <b>사용료</b>(경험 정보·노하우)로 구분한 대가도 그 정보를 국내에서 사용하면 국내 공급이므로, 2장 표(사용처)대로 판단합니다.<small>§20①1호 · <span class="nb">기본통칙 52-95</span>…1</small></span></li>
+    <li><span>외국법인 <b>국내지점</b>이 본점에서 받는 용역은 대리납부 의무가 없다는 해석은 지점 사안이며, 별도 법인인 자회사에는 적용하지 않습니다.<small><span class="nb">서면-2021-부가-7729</span> · 모회사 비용 배분액을 용역 대가로 보아 대리납부 대상으로 본 결정(면세사업 자회사) 조심2017서2928</small></span></li>
+  </ul>
+  <div class="card soft split">
+    <div class="label">판단이 갈린 적 있음<span class="tag-split">국외 수행 자문</span></div>
+    <p>본사가 국외에서 수행하고 결과물만 보낸 자문이 「국내에서」 공급된 용역인가 — 판례와 최근 과세기준자문은 <b>역무의 중요하고 본질적인 부분이 이루어진 장소</b>로 봅니다. 결과물을 국내에서 사용한다는 점을 들어 대리납부 대상으로 본 해석·결정도 있습니다. 과세사업에만 사용하면 어느 쪽이든 대상이 아니므로, 면세사업·불공제 용도일 때 역무의 핵심과 자회사의 협력이 어디서 이루어졌는지 보여 주는 자료로 판단합니다.</p>
+    <small>중요·본질 기준: 대법원 2019두34913 · <span class="nb">기준-2024-법규부가-0081</span> / 국내 사용 중시: <span class="nb">사전-2019-법령해석부가-0569</span> · 조심2017서2928</small>
+  </div>
+  <footer><span>근거: 부가가치세법 §20①1호 · §38①1호 · §52①</span><span>›</span></footer>
+</section>
+
+<!-- 6. 흔한 실수 -->
+<section class="slide" id="s6">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 03 · 2026.10.30</span><span class="page">6 / 6</span></div>
+  <h2><span class="no">5</span>흔한 실수</h2>
+  <div class="fix">
+    <div class="bad">과세사업만 하는데 본사 용역이라 대리납부하고 매입세액으로 공제</div>
+    <div class="good">과세사업에 사용하는 용역은 대상이 아니고, 낸 세액을 매입세액에 넣는 규정도 없습니다<small>§52① 괄호 · §38①1호</small></div>
+  </div>
+  <div class="fix">
+    <div class="bad">면세사업을 겸영하는데 대리납부를 전혀 하지 않음</div>
+    <div class="good">면세사업 사용분은 대리납부합니다. 구분할 수 없으면 면세공급가액 비율로 안분합니다<small>시행령 §95②</small></div>
+  </div>
+  <div class="fix last">
+    <div class="bad">외화 대가를 일률적으로 기준환율로 환산</div>
+    <div class="good">원화로 외화를 사서 지급했으면 대고객외국환매도율로 환산합니다<small>시행령 §95③1호</small></div>
+  </div>
+  <div class="basis">
+    <div class="label">근거</div>
+    <ul>
+      <li><b>법령</b> 부가가치세법 §20·§26·§30·§38·§39·§48·§49·§52 · 시행령 §95 · <span class="nb">기본통칙 52-95</span>…1·…3 · 국세기본법 §47의5 · 시행령 §27의4</li>
+      <li><b>해석·결정·판결</b> <span class="nb">부가46015-16</span>(1997.1.4.) · <span class="nb">부가46015-334</span>(1995.2.17.) · <span class="nb">재소비46015-159</span>(2003.6.9.) · <span class="nb">부가가치세과-635(2011.6.17.)</span> · <span class="nb">서면인터넷방문상담3팀-434</span>(2006.3.7.) · <span class="nb">서면-2021-부가-7729</span> · <span class="nb">기준-2024-법규부가-0081</span> · <span class="nb">사전-2019-법령해석부가-0569</span> · 조심2017서2928 · 대법원 2019두34913</li>
+    </ul>
+  </div>
+  <p class="nextline"><span class="k">다음 카드 · 11.03(화) · 04</span><span>경영자문료 손금 인정 요건과 정상가격</span></p>
+  <footer><span>근거 확인 기준 2026.10.23 · 실무 참고용이며 개별 사안은 검토가 필요합니다</span></footer>
+</section>
+
+<script>
+  var n = location.hash.replace('#', '');
+  if (n) { document.body.classList.add('one'); var s = document.getElementById('s' + n); if (s) s.classList.add('on'); }
+</script>
+</body>
+</html>

@@ -148,6 +148,30 @@ s.style.display=was;});
 var pre=document.createElement('pre');pre.id='__overflow';pre.textContent=JSON.stringify(out);document.body.appendChild(pre);});
 </script>"""
 
+# 장 안의 블록 겹침·상자 간격(10px 미만)·문서번호 줄 끊김을 재는 스크립트(제작 세션 작업\점검.py에서 옮김, 2026-10-23 — 두 번 나온 검토 지적).
+LAYOUT_JS = r"""<script>
+window.addEventListener('load',function(){var out=[];
+[].slice.call(document.querySelectorAll('section.slide')).forEach(function(s,i){
+var was=s.style.display;s.style.display='flex';
+var kids=[].slice.call(s.children).filter(function(e){return e.tagName!=='SCRIPT'});
+for(var a=0;a<kids.length;a++)for(var b=a+1;b<kids.length;b++){
+var A=kids[a].getBoundingClientRect(),B=kids[b].getBoundingClientRect();
+if(A.height&&B.height&&A.bottom>B.top+1&&B.bottom>A.top+1&&A.right>B.left+1&&B.right>A.left+1)
+out.push((i+1)+'장 겹침 '+(kids[a].textContent||'').trim().slice(0,12)+' / '+(kids[b].textContent||'').trim().slice(0,12));}
+for(var c=1;c<kids.length;c++){var P=kids[c-1].getBoundingClientRect(),Q=kids[c].getBoundingClientRect();
+var gap=Q.top-P.bottom;if(P.height&&Q.height&&kids[c].className.indexOf('arr')<0&&kids[c-1].className.indexOf('arr')<0&&kids[c].tagName!=='FOOTER'&&gap>=0&&gap<10)
+out.push((i+1)+'장 상자 간격 '+Math.round(gap)+'px: '+(kids[c].textContent||'').trim().slice(0,12));}
+var w=document.createTreeWalker(s,NodeFilter.SHOW_TEXT,null,false),nd,re=/[^\s·()\/,]*\d[^\s·()\/,]*-[^\s·()\/,]+/g,m;
+while(nd=w.nextNode()){re.lastIndex=0;while(m=re.exec(nd.data)){var r=document.createRange();r.setStart(nd,m.index);r.setEnd(nd,m.index+m[0].length);
+var tops={};[].slice.call(r.getClientRects()).forEach(function(q){if(q.width>1)tops[Math.round(q.top)]=1;});
+if(Object.keys(tops).length>1)out.push((i+1)+'장 번호 줄 끊김: '+m[0]);}}
+s.style.display=was;});
+var pre=document.createElement('pre');pre.id='__layout';pre.textContent=JSON.stringify(out);document.body.appendChild(pre);});
+</script>"""
+
+# 「빼다」 활용형(뺀·빼고·빼서·빼면·뺍니다·빼야·뺐 등) — BANNED_WORDS의 「빼다」 꼴만으로는 빠져나간다.
+BBAE_RE = r"뺀|뺍|뺐|빼(?:고|서|면|야|도|지|어|자)"
+
 
 def fill(tpl, **kw):
     for k, v in kw.items():
@@ -176,17 +200,25 @@ def load_guard():
     return mod
 
 
-def overflow_check(src):
+def dom_check(src, js, pre_id, what):
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td) / "점검.html"
-        tmp.write_text(src.read_text(encoding="utf-8").replace("</body>", OVERFLOW_JS + "</body>"), encoding="utf-8")
+        tmp.write_text(src.read_text(encoding="utf-8").replace("</body>", js + "</body>"), encoding="utf-8")
         r = subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--virtual-time-budget=3000",
                             f"--window-size={W},{H}", "--dump-dom", tmp.as_uri()],
                            capture_output=True, timeout=90)
-        m = re.search(r'<pre id="__overflow">(.*?)</pre>', r.stdout.decode("utf-8", "replace"), re.S)
+        m = re.search(rf'<pre id="{pre_id}">(.*?)</pre>', r.stdout.decode("utf-8", "replace"), re.S)
         if not m:
-            return ["넘침 점검을 실행하지 못했습니다"]
+            return [f"{what} 점검을 실행하지 못했습니다"]
         return json.loads(html.unescape(m.group(1)))
+
+
+def overflow_check(src):
+    return dom_check(src, OVERFLOW_JS, "__overflow", "넘침")
+
+
+def layout_check(src):
+    return dom_check(src, LAYOUT_JS, "__layout", "배치")
 
 
 def check_card(c, src, guard):
@@ -201,6 +233,8 @@ def check_card(c, src, guard):
     for w in BANNED_STANDALONE:
         if re.search(rf"(?<![가-힣]){w}(?![가-힣])", text):
             problems.append(f"{no}번 금지 어휘 「{w}」")
+    for m in sorted(set(re.findall(BBAE_RE, text))):
+        problems.append(f"{no}번 금지 어휘 「빼다」 활용형 「{m}」")
     for name in CLIENT_NAMES:
         if re.search(rf"(?<![A-Za-z가-힣]){re.escape(name)}(?![A-Za-z])", text):
             problems.append(f"{no}번 거래처 이름 「{name}」")
@@ -212,6 +246,8 @@ def check_card(c, src, guard):
         problems.append(f"{no}번 카드 안에 게시일 {dot_date(c['published'])} 표기가 없음")
     for o in overflow_check(src):
         problems.append(f"{no}번 넘침: {o}")
+    for o in layout_check(src):
+        problems.append(f"{no}번 배치: {o}")
     return problems
 
 
