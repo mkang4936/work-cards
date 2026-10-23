@@ -172,6 +172,9 @@ var pre=document.createElement('pre');pre.id='__layout';pre.textContent=JSON.str
 # 「빼다」 활용형(뺀·빼고·빼서·빼면·뺍니다·빼야·뺐 등) — BANNED_WORDS의 「빼다」 꼴만으로는 빠져나간다.
 BBAE_RE = r"뺀|뺍|뺐|빼(?:고|서|면|야|도|지|어|자)"
 
+# 분량 상한(설계.md 「묶음 작업 순서」 3, 사용자 2026-10-23): 공백을 뺀 보이는 글자 수.
+MAX_CARD_CHARS, MAX_SLIDE_CHARS = 2800, 700
+
 
 def fill(tpl, **kw):
     for k, v in kw.items():
@@ -191,6 +194,12 @@ def png_size(p):
 def visible_text(src_html):
     body = re.sub(r"<(style|script)\b.*?</\1>", " ", src_html, flags=re.S)
     return html.unescape(re.sub(r"<[^>]+>", "\n", body))
+
+
+def slide_chars(src_html):
+    body = re.sub(r"<(style|script)\b.*?</\1>", " ", src_html, flags=re.S)
+    return [len(re.sub(r"\s", "", html.unescape(re.sub(r"<[^>]+>", "", s))))
+            for s in re.findall(r'<section class="slide".*?</section>', body, flags=re.S)]
 
 
 def load_guard():
@@ -244,6 +253,12 @@ def check_card(c, src, guard):
         problems.append(f"{no}번 근거 확인 기준일(basis_date)이 비어 있음")
     if dot_date(c["published"]) not in raw:
         problems.append(f"{no}번 카드 안에 게시일 {dot_date(c['published'])} 표기가 없음")
+    chars = slide_chars(raw)
+    if sum(chars) > MAX_CARD_CHARS:
+        problems.append(f"{no}번 분량 {sum(chars)}자 — 상한 {MAX_CARD_CHARS}자 초과")
+    for i, n in enumerate(chars, 1):
+        if n > MAX_SLIDE_CHARS:
+            problems.append(f"{no}번 {i}장 분량 {n}자 — 장당 상한 {MAX_SLIDE_CHARS}자 초과")
     for o in overflow_check(src):
         problems.append(f"{no}번 넘침: {o}")
     for o in layout_check(src):
