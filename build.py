@@ -1,17 +1,29 @@
 # 외투법인 실무 카드 사이트 만들기
 # 원본/<번호>/카드.html → c/<번호>/<장>.png 와 c/<번호>/index.html, 첫 화면 index.html
 # 실행: python -I build.py
+# 기계 점검(설계.md 「만드는 방법」)을 먼저 돌리고, 하나라도 걸리면 아무것도 만들지 않고 멈춘다.
 import html
+import importlib.util
 import json
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 EDGE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
+KOREAN_GUARD = Path.home() / ".claude" / "hooks" / "korean_guard.py"
 W, H = 1080, 1350
+
+# 사례집 어휘 규칙에서 카드에 그대로 쓰는 것(설계.md). 활용형이 갈리는 말은 금지된 꼴만 적는다.
+BANNED_WORDS = ["뗀다", "떼는", "떼고", "떼어", "통장", "통째로", "사고가 난다", "챙겨야", "빼다"]
+BANNED_STANDALONE = ["돈"]
+# 공개 페이지라 거래처 이름이 들어가면 안 된다.
+CLIENT_NAMES = ["엔구", "코리아스마일", "우에무라", "다이요", "에이지스", "Ajis", "TIP"]
 
 STYLE = """
 :root{--navy:#1f3a5f;--navy-soft:#e9eef5;--ink:#1d232b;--gray:#5b6573;--line:#dde2e8;--bg-soft:#f6f7f9;--ok:#2f7a5b}
@@ -24,6 +36,9 @@ a{color:inherit;text-decoration:none}
 .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
 .foot{margin-top:28px;font-size:12px;color:#9aa3ae;line-height:1.6;text-align:center}
 """
+
+# 예약 공개: 게시일(한국 날짜)이 오지 않은 카드는 목록에서 숨긴다.
+TODAY_JS = "var today=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);"
 
 INDEX = """<!doctype html>
 <html lang="ko"><head>
@@ -40,34 +55,41 @@ h1{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-top:14px}
 .item a{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
 .item img{width:84px;height:105px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex:none;background:#fff}
 .meta{display:flex;flex-direction:column;min-width:0}
-.no{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px}
+.no{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.5px}
 .new{display:inline-block;margin-left:6px;font-size:11px;color:#fff;background:var(--navy);border-radius:6px;padding:1px 6px;letter-spacing:0}
 .ttl{font-size:16px;font-weight:700;line-height:1.4;margin-top:3px}
 .sum{font-size:13px;color:var(--gray);line-height:1.5;margin-top:4px}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .tag{font-size:11.5px;color:var(--gray);background:var(--bg-soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.tag.season{color:var(--ok);background:#eaf4ef;border-color:#cfe6da}
 .none{display:none;text-align:center;color:var(--gray);font-size:14px;margin-top:24px}
 </style></head><body><div class="wrap">
-<span class="badge">매주 한 장</span>
+<span class="badge">매주 화·금</span>
 <h1>@TITLE@</h1>
 <p class="sub">@DESC@</p>
-<input class="search" id="q" type="search" placeholder="찾기 — 예: 배당, 조세조약, 주재원">
+<input class="search" id="q" type="search" placeholder="찾기 — 예: 경영자문료, 주재원, 배당">
 <ul class="list" id="list">@ITEMS@</ul>
 <p class="none" id="none">찾는 카드가 없습니다.</p>
 <p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>카드마다 근거 확인 기준일이 적혀 있습니다.</p>
 </div>
 <script>
-var q=document.getElementById('q'),items=[].slice.call(document.querySelectorAll('.item'));
-q.addEventListener('input',function(){var v=q.value.trim().toLowerCase(),n=0;
+@TODAY@
+var items=[].slice.call(document.querySelectorAll('.item')).filter(function(li){
+  if(li.getAttribute('data-pub')>today){li.parentNode.removeChild(li);return false;}return true;});
+var latest=items.reduce(function(m,li){var p=li.getAttribute('data-pub');return p>m?p:m;},'');
+items.forEach(function(li){if(li.getAttribute('data-pub')===latest){var s=li.querySelector('.no');s.insertAdjacentHTML('beforeend','<span class="new">새 카드</span>');}});
+var q=document.getElementById('q');
+function filt(){var v=q.value.trim().toLowerCase(),n=0;
 items.forEach(function(li){var hit=!v||li.getAttribute('data-k').toLowerCase().indexOf(v)>=0;li.style.display=hit?'':'none';if(hit)n++;});
-document.getElementById('none').style.display=n?'none':'block';});
+document.getElementById('none').style.display=n?'none':'block';}
+q.addEventListener('input',filt);filt();
 </script>
 </body></html>
 """
 
-ITEM = """<li class="item" data-k="@KEY@"><a href="c/@NO@/">
+ITEM = """<li class="item" data-k="@KEY@" data-pub="@PUB@"><a href="c/@NO@/">
 <img src="c/@NO@/1.png" alt="" loading="lazy">
-<div class="meta"><span class="no">카드 @NO@@NEW@</span><span class="ttl">@T@</span><span class="sum">@S@</span>
+<div class="meta"><span class="no">카드 @NO@ · @DATE@</span><span class="ttl">@T@</span><span class="sum">@S@</span>
 <span class="tags">@TAGS@</span></div></a></li>"""
 
 VIEWER = """<!doctype html>
@@ -92,10 +114,10 @@ VIEWER = """<!doctype html>
 .info{margin-top:18px;font-size:13px;color:var(--gray);line-height:1.6;text-align:center}
 .next{display:block;margin-top:16px;text-align:center;font-size:15px;font-weight:600;color:#fff;background:var(--navy);border-radius:12px;padding:13px}
 </style></head><body><div class="wrap">
-<div class="bar"><span class="badge">외투법인 실무 카드 · @NO@</span><a class="home" href="../../">전체 카드 ›</a></div>
+<div class="bar"><span class="badge">카드 @NO@ · @DATE@</span><a class="home" href="../../">전체 카드 ›</a></div>
 <div class="track" id="t">@IMGS@</div>
 <div class="ctl"><button id="p" aria-label="이전">‹</button><span class="dots" id="d">@DOTS@</span><button id="n" aria-label="다음">›</button></div>
-<p class="info">옆으로 넘겨 보세요 · 근거 확인 기준 @BASIS@</p>
+<p class="info">@INFO@</p>
 <a class="next" href="../../">다른 카드 보기</a>
 <p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.</p>
 </div>
@@ -115,6 +137,17 @@ paint();
 </body></html>
 """
 
+# 카드 원본을 한 장씩 띄워 내용이 카드 밖으로 넘치는지 재는 스크립트(임시 사본에만 붙인다).
+OVERFLOW_JS = """<script>
+window.addEventListener('load',function(){var out=[];
+[].slice.call(document.querySelectorAll('section.slide')).forEach(function(s,i){
+var was=s.style.display;s.style.display='flex';var r=s.getBoundingClientRect();
+[].slice.call(s.querySelectorAll('*')).forEach(function(e){var b=e.getBoundingClientRect();
+if(b.width&&b.height&&(b.bottom>r.bottom+1||b.right>r.right+1)){out.push((i+1)+'장 '+e.tagName.toLowerCase()+' '+(e.textContent||'').trim().slice(0,20));}});
+s.style.display=was;});
+var pre=document.createElement('pre');pre.id='__overflow';pre.textContent=JSON.stringify(out);document.body.appendChild(pre);});
+</script>"""
+
 
 def fill(tpl, **kw):
     for k, v in kw.items():
@@ -122,21 +155,75 @@ def fill(tpl, **kw):
     return tpl
 
 
+def dot_date(iso):
+    return iso.replace("-", ".")
+
+
 def png_size(p):
     b = p.read_bytes()[:24]
     return int.from_bytes(b[16:20], "big"), int.from_bytes(b[20:24], "big")
 
 
+def visible_text(src_html):
+    body = re.sub(r"<(style|script)\b.*?</\1>", " ", src_html, flags=re.S)
+    return html.unescape(re.sub(r"<[^>]+>", "\n", body))
+
+
+def load_guard():
+    spec = importlib.util.spec_from_file_location("korean_guard", KOREAN_GUARD)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def overflow_check(src):
+    with tempfile.TemporaryDirectory() as td:
+        tmp = Path(td) / "점검.html"
+        tmp.write_text(src.read_text(encoding="utf-8").replace("</body>", OVERFLOW_JS + "</body>"), encoding="utf-8")
+        r = subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--virtual-time-budget=3000",
+                            f"--window-size={W},{H}", "--dump-dom", tmp.as_uri()],
+                           capture_output=True, timeout=90)
+        m = re.search(r'<pre id="__overflow">(.*?)</pre>', r.stdout.decode("utf-8", "replace"), re.S)
+        if not m:
+            return ["넘침 점검을 실행하지 못했습니다"]
+        return json.loads(html.unescape(m.group(1)))
+
+
+def check_card(c, src, guard):
+    """설계.md의 기계 점검. 걸린 것을 문장으로 돌려준다."""
+    no = c["no"]
+    problems = []
+    raw = src.read_text(encoding="utf-8")
+    text = visible_text(raw)
+    for w in BANNED_WORDS:
+        if w in text:
+            problems.append(f"{no}번 금지 어휘 「{w}」")
+    for w in BANNED_STANDALONE:
+        if re.search(rf"(?<![가-힣]){w}(?![가-힣])", text):
+            problems.append(f"{no}번 금지 어휘 「{w}」")
+    for name in CLIENT_NAMES:
+        if re.search(rf"(?<![A-Za-z가-힣]){re.escape(name)}(?![A-Za-z])", text):
+            problems.append(f"{no}번 거래처 이름 「{name}」")
+    for s in guard.english_chunks(text, guard.MIN_WORDS_TEXT):
+        problems.append(f"{no}번 영어 문장 「{s}」")
+    if c.get("kind") != "안내" and not c.get("basis_date"):
+        problems.append(f"{no}번 근거 확인 기준일(basis_date)이 비어 있음")
+    if dot_date(c["published"]) not in raw:
+        problems.append(f"{no}번 카드 안에 게시일 {dot_date(c['published'])} 표기가 없음")
+    for o in overflow_check(src):
+        problems.append(f"{no}번 넘침: {o}")
+    return problems
+
+
 def render(src, out_dir, count):
-    out_dir.mkdir(parents=True, exist_ok=True)
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
+    out_dir.mkdir(parents=True)
     uri = src.as_uri()
     for i in range(1, count + 1):
-        out = out_dir / f"{i}.png"
-        if out.exists():
-            out.unlink()
         subprocess.run([str(EDGE), "--headless=new", "--disable-gpu", "--hide-scrollbars",
                         "--force-device-scale-factor=1", f"--window-size={W},{H}",
-                        f"--screenshot={out}", f"{uri}#{i}"],
+                        f"--screenshot={out_dir / f'{i}.png'}", f"{uri}#{i}"],
                        capture_output=True, timeout=60)
         time.sleep(0.3)
 
@@ -146,10 +233,18 @@ def main():
     site, cards = conf["site"], conf["cards"]
     base = site["base_url"]
     esc = html.escape
-    problems = []
-    items = []
-    latest = max(c["published"] for c in cards)
+    guard = load_guard()
 
+    # 1) 기계 점검 — 걸리면 아무것도 만들지 않는다
+    problems = []
+    for c in cards:
+        problems += check_card(c, ROOT / "원본" / c["no"] / "카드.html", guard)
+    if problems:
+        print("기계 점검에 걸려 만들지 않았습니다:", *problems, sep="\n  ")
+        sys.exit(1)
+
+    # 2) 이미지와 페이지
+    items = []
     for c in cards:
         no = c["no"]
         src = ROOT / "원본" / no / "카드.html"
@@ -163,30 +258,32 @@ def main():
             elif png_size(p) != (W, H):
                 problems.append(f"{no}번 {i}장 크기 {png_size(p)}")
         imgs = "".join(f'<img src="{i}.png" alt="{esc(c["title"])} {i}/{count}">' for i in range(1, count + 1))
-        dots = "<i></i>" * count
+        info = "옆으로 넘겨 보세요" + (f" · 근거 확인 기준 {esc(c['basis_date'])}" if c.get("basis_date") else "")
         (out_dir / "index.html").write_text(fill(
-            VIEWER, STYLE=STYLE, NO=no, T=esc(c["title"]), S=esc(c["summary"]),
-            OGIMG=f"{base}c/{no}/1.png", URL=f"{base}c/{no}/", IMGS=imgs, DOTS=dots,
-            BASIS=esc(c["basis_date"])), encoding="utf-8")
-        key = " ".join([c["title"], c["summary"]] + c["tags"])
+            VIEWER, STYLE=STYLE, NO=no, T=esc(c["title"]), S=esc(c["summary"]), DATE=dot_date(c["published"]),
+            OGIMG=f"{base}c/{no}/1.png", URL=f"{base}c/{no}/", IMGS=imgs, DOTS="<i></i>" * count,
+            INFO=info), encoding="utf-8")
+        tags = ([c["season"]] + [t for t in c["tags"] if t != c["season"]]) if c.get("season") else c["tags"]
+        key = " ".join([c["title"], c["summary"]] + tags)
         items.append((c["published"], no, fill(
-            ITEM, KEY=esc(key), NO=no, T=esc(c["title"]), S=esc(c["summary"]),
-            NEW='<span class="new">새 카드</span>' if c["published"] == latest else "",
-            TAGS="".join(f'<span class="tag">{esc(t)}</span>' for t in c["tags"]))))
+            ITEM, KEY=esc(key), PUB=c["published"], NO=no, DATE=dot_date(c["published"]),
+            T=esc(c["title"]), S=esc(c["summary"]),
+            TAGS="".join(f'<span class="tag{" season" if t == c.get("season") else ""}">{esc(t)}</span>' for t in tags))))
+
+    if problems:
+        print("이미지 점검에 걸렸습니다:", *problems, sep="\n  ")
+        sys.exit(1)
 
     items.sort(reverse=True)
-    newest = items[0][1]
+    today = date.today().isoformat()
+    shown = [i for i in items if i[0] <= today] or items
     (ROOT / "index.html").write_text(fill(
-        INDEX, STYLE=STYLE, TITLE=esc(site["title"]), DESC=esc(site["description"]),
-        OGIMG=f"{base}c/{newest}/1.png", URL=base, ITEMS="".join(i[2] for i in items)), encoding="utf-8")
+        INDEX, STYLE=STYLE, TITLE=esc(site["title"]), DESC=esc(site["description"]), TODAY=TODAY_JS,
+        OGIMG=f"{base}c/{shown[0][1]}/1.png", URL=base, ITEMS="".join(i[2] for i in items)), encoding="utf-8")
     (ROOT / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
     (ROOT / ".nojekyll").write_text("", encoding="utf-8")
 
-    print(f"카드 {len(cards)}개 처리")
-    if problems:
-        print("문제:", *problems, sep="\n  ")
-        sys.exit(1)
-    print("이미지 확인: 모두 1080x1350")
+    print(f"카드 {len(cards)}개 처리 · 기계 점검 통과 · 이미지 모두 {W}x{H}")
 
 
 if __name__ == "__main__":

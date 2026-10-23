@@ -4,7 +4,7 @@
 <meta name="robots" content="noindex,nofollow">
 <title>외투법인 실무 카드</title>
 <meta property="og:type" content="website"><meta property="og:title" content="외투법인 실무 카드">
-<meta property="og:description" content="외투법인 실무에서 자주 막히는 것을 한 주에 한 장씩, 근거와 함께 정리합니다."><meta property="og:image" content="https://mkang4936.github.io/work-cards/c/01/1.png"><meta property="og:url" content="https://mkang4936.github.io/work-cards/">
+<meta property="og:description" content="외투법인 실무에서 판단이 필요한 장면을 매주 화·금 한 장씩, 근거와 함께 정리합니다."><meta property="og:image" content="https://mkang4936.github.io/work-cards/c/01/1.png"><meta property="og:url" content="https://mkang4936.github.io/work-cards/">
 <style>
 :root{--navy:#1f3a5f;--navy-soft:#e9eef5;--ink:#1d232b;--gray:#5b6573;--line:#dde2e8;--bg-soft:#f6f7f9;--ok:#2f7a5b}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -23,29 +23,36 @@ h1{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-top:14px}
 .item a{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
 .item img{width:84px;height:105px;object-fit:cover;border-radius:8px;border:1px solid var(--line);flex:none;background:#fff}
 .meta{display:flex;flex-direction:column;min-width:0}
-.no{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px}
+.no{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.5px}
 .new{display:inline-block;margin-left:6px;font-size:11px;color:#fff;background:var(--navy);border-radius:6px;padding:1px 6px;letter-spacing:0}
 .ttl{font-size:16px;font-weight:700;line-height:1.4;margin-top:3px}
 .sum{font-size:13px;color:var(--gray);line-height:1.5;margin-top:4px}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .tag{font-size:11.5px;color:var(--gray);background:var(--bg-soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.tag.season{color:var(--ok);background:#eaf4ef;border-color:#cfe6da}
 .none{display:none;text-align:center;color:var(--gray);font-size:14px;margin-top:24px}
 </style></head><body><div class="wrap">
-<span class="badge">매주 한 장</span>
+<span class="badge">매주 화·금</span>
 <h1>외투법인 실무 카드</h1>
-<p class="sub">외투법인 실무에서 자주 막히는 것을 한 주에 한 장씩, 근거와 함께 정리합니다.</p>
-<input class="search" id="q" type="search" placeholder="찾기 — 예: 배당, 조세조약, 주재원">
-<ul class="list" id="list"><li class="item" data-k="일본 본사에 배당 보낼 때, 원천징수는 몇 %? 신청서를 받고, 일본 법인이 의결권 주식 25% 이상을 6개월 보유했으면 5% · 아니면 15% 배당 한일 조세조약 제한세율 원천징수"><a href="c/01/">
+<p class="sub">외투법인 실무에서 판단이 필요한 장면을 매주 화·금 한 장씩, 근거와 함께 정리합니다.</p>
+<input class="search" id="q" type="search" placeholder="찾기 — 예: 경영자문료, 주재원, 배당">
+<ul class="list" id="list"><li class="item" data-k="외투법인의 일생을 따라갑니다 본사와의 거래부터 주재원, 연말 결산, 이익 환원과 투자 회수까지 — 시즌 1 네 막 시즌 1 연재 안내 경영자문료" data-pub="2026-10-23"><a href="c/01/">
 <img src="c/01/1.png" alt="" loading="lazy">
-<div class="meta"><span class="no">카드 01<span class="new">새 카드</span></span><span class="ttl">일본 본사에 배당 보낼 때, 원천징수는 몇 %?</span><span class="sum">신청서를 받고, 일본 법인이 의결권 주식 25% 이상을 6개월 보유했으면 5% · 아니면 15%</span>
-<span class="tags"><span class="tag">배당</span><span class="tag">한일 조세조약</span><span class="tag">제한세율</span><span class="tag">원천징수</span></span></div></a></li></ul>
+<div class="meta"><span class="no">카드 01 · 2026.10.23</span><span class="ttl">외투법인의 일생을 따라갑니다</span><span class="sum">본사와의 거래부터 주재원, 연말 결산, 이익 환원과 투자 회수까지 — 시즌 1 네 막</span>
+<span class="tags"><span class="tag season">시즌 1</span><span class="tag">연재 안내</span><span class="tag">경영자문료</span></span></div></a></li></ul>
 <p class="none" id="none">찾는 카드가 없습니다.</p>
 <p class="foot">실무 참고용이며 개별 사안은 검토가 필요합니다.<br>카드마다 근거 확인 기준일이 적혀 있습니다.</p>
 </div>
 <script>
-var q=document.getElementById('q'),items=[].slice.call(document.querySelectorAll('.item'));
-q.addEventListener('input',function(){var v=q.value.trim().toLowerCase(),n=0;
+var today=new Date(Date.now()+9*3600*1000).toISOString().slice(0,10);
+var items=[].slice.call(document.querySelectorAll('.item')).filter(function(li){
+  if(li.getAttribute('data-pub')>today){li.parentNode.removeChild(li);return false;}return true;});
+var latest=items.reduce(function(m,li){var p=li.getAttribute('data-pub');return p>m?p:m;},'');
+items.forEach(function(li){if(li.getAttribute('data-pub')===latest){var s=li.querySelector('.no');s.insertAdjacentHTML('beforeend','<span class="new">새 카드</span>');}});
+var q=document.getElementById('q');
+function filt(){var v=q.value.trim().toLowerCase(),n=0;
 items.forEach(function(li){var hit=!v||li.getAttribute('data-k').toLowerCase().indexOf(v)>=0;li.style.display=hit?'':'none';if(hit)n++;});
-document.getElementById('none').style.display=n?'none':'block';});
+document.getElementById('none').style.display=n?'none':'block';}
+q.addEventListener('input',filt);filt();
 </script>
 </body></html>
