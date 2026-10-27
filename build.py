@@ -89,15 +89,15 @@ q.addEventListener('input',filt);filt();
 
 ITEM = """<li class="item" data-k="@KEY@" data-pub="@PUB@"><a href="c/@NO@/">
 <img src="c/@NO@/1.png" alt="" loading="lazy">
-<div class="meta"><span class="no">카드 @NO@ · @DATE@</span><span class="ttl">@T@</span><span class="sum">@S@</span>
+<div class="meta"><span class="no">@LABEL@ · @DATE@</span><span class="ttl">@T@</span><span class="sum">@S@</span>
 <span class="tags">@TAGS@</span></div></a></li>"""
 
 VIEWER = """<!doctype html>
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>@NO@ · @T@</title>
-<meta property="og:type" content="article"><meta property="og:title" content="실무 카드 @NO@ · @T@">
+<title>@SHORT@ · @T@</title>
+<meta property="og:type" content="article"><meta property="og:title" content="실무 @LABEL@ · @T@">
 <meta property="og:description" content="@S@"><meta property="og:image" content="@OGIMG@"><meta property="og:url" content="@URL@">
 <style>@STYLE@
 .bar{display:flex;justify-content:space-between;align-items:center}
@@ -114,7 +114,7 @@ VIEWER = """<!doctype html>
 .info{margin-top:18px;font-size:13px;color:var(--gray);line-height:1.6;text-align:center}
 .next{display:block;margin-top:16px;text-align:center;font-size:15px;font-weight:600;color:#fff;background:var(--navy);border-radius:12px;padding:13px}
 </style></head><body><div class="wrap">
-<div class="bar"><span class="badge">카드 @NO@ · @DATE@</span><a class="home" href="../../">전체 카드 ›</a></div>
+<div class="bar"><span class="badge">@LABEL@ · @DATE@</span><a class="home" href="../../">전체 카드 ›</a></div>
 <div class="track" id="t">@IMGS@</div>
 <div class="ctl"><button id="p" aria-label="이전">‹</button><span class="dots" id="d">@DOTS@</span><button id="n" aria-label="다음">›</button></div>
 <p class="info">@INFO@</p>
@@ -298,6 +298,8 @@ def main():
     items = []
     for c in cards:
         no = c["no"]
+        # 호외는 cards.json의 label(예: 「호외 01」)로 표시한다. 정규 카드는 「카드 NN」 그대로.
+        label, short = c.get("label") or f"카드 {no}", c.get("label") or no
         src = ROOT / "원본" / no / "카드.html"
         count = len(re.findall(r'<section class="slide"', src.read_text(encoding="utf-8")))
         out_dir = ROOT / "c" / no
@@ -311,13 +313,13 @@ def main():
         imgs = "".join(f'<img src="{i}.png" alt="{esc(c["title"])} {i}/{count}">' for i in range(1, count + 1))
         info = "옆으로 넘겨 보세요" + (f" · 근거 확인 기준 {esc(c['basis_date'])}" if c.get("basis_date") else "")
         (out_dir / "index.html").write_text(fill(
-            VIEWER, STYLE=STYLE, NO=no, T=esc(c["title"]), S=esc(c["summary"]), DATE=dot_date(c["published"]),
+            VIEWER, STYLE=STYLE, NO=no, LABEL=esc(label), SHORT=esc(short), T=esc(c["title"]), S=esc(c["summary"]), DATE=dot_date(c["published"]),
             OGIMG=f"{base}c/{no}/1.png", URL=f"{base}c/{no}/", IMGS=imgs, DOTS="<i></i>" * count,
             INFO=info), encoding="utf-8")
         tags = ([c["season"]] + [t for t in c["tags"] if t != c["season"]]) if c.get("season") else c["tags"]
         key = " ".join([c["title"], c["summary"]] + tags)
         items.append((c["published"], no, fill(
-            ITEM, KEY=esc(key), PUB=c["published"], NO=no, DATE=dot_date(c["published"]),
+            ITEM, KEY=esc(key), PUB=c["published"], NO=no, LABEL=esc(label), DATE=dot_date(c["published"]),
             T=esc(c["title"]), S=esc(c["summary"]),
             TAGS="".join(f'<span class="tag{" season" if t == c.get("season") else ""}">{esc(t)}</span>' for t in tags))))
 
