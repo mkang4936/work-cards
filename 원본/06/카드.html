@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>외투법인 실무 카드 06</title>
+<style>
+  :root {
+    --navy: #1f3a5f;
+    --navy-soft: #e9eef5;
+    --ink: #1d232b;
+    --gray: #5b6573;
+    --line: #dde2e8;
+    --bg-soft: #f6f7f9;
+    --ok: #2f7a5b;
+    --warn: #a4462f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1080px;
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .slide {
+    width: 1080px; height: 1350px; padding: 64px 76px 48px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  body.one .slide { display: none; border-bottom: 0; }
+  body.one .slide.on { display: flex; }
+  .slide > * { flex-shrink: 0; }
+
+  /* 머리 */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 26px; font-weight: 600; color: var(--ok);
+    background: #eaf4ef; border-radius: 999px; padding: 10px 24px;
+  }
+  .badge::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+  .page { font-size: 26px; color: #9aa3ae; font-weight: 600; }
+  .prev { margin-top: 34px; font-size: 26px; line-height: 1.5; color: var(--gray); border-left: 6px solid var(--navy); padding: 2px 0 2px 18px; }
+  .prev b { color: var(--navy); }
+  h1 { font-size: 72px; font-weight: 800; letter-spacing: -2px; line-height: 1.25; margin-top: 30px; }
+  h1 em { font-style: normal; color: var(--navy); }
+  .sub { font-size: 32px; color: var(--gray); margin-top: 26px; line-height: 1.6; }
+
+  h2 {
+    font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px;
+    letter-spacing: -1px; margin-top: 36px;
+  }
+  h2 .no {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff;
+    font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .lead { font-size: 30px; color: var(--gray); margin-top: 18px; line-height: 1.55; }
+  .lead b { color: var(--ink); }
+
+  .card { border: 2px solid var(--line); border-radius: 24px; padding: 30px 36px; }
+  .label { font-size: 26px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; }
+  .navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .navy .label { color: #b9c7da; }
+  .soft { background: var(--bg-soft); }
+  .nb { white-space: nowrap; }
+  .ref { font-size: 23px; color: #8a94a1; margin-top: 10px; line-height: 1.5; }
+  .navy .ref { color: #9fb0c6; }
+
+  /* 표지 */
+  .answer { margin-top: auto; }
+  .answer .big { font-size: 37px; font-weight: 700; line-height: 1.55; margin-top: 14px; }
+  .answer .big b { color: #fff; background: rgba(255,255,255,0.14); border-radius: 10px; padding: 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .chip { font-size: 25px; padding: 10px 20px; border-radius: 14px; background: var(--bg-soft); border: 2px solid var(--line); }
+
+  /* 요건 격자 */
+  .reqs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+  .req { border: 2px solid var(--line); border-radius: 22px; padding: 22px 26px; }
+  .req .k { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; }
+  .req b { display: block; font-size: 33px; margin-top: 4px; }
+  .req p { font-size: 25px; line-height: 1.45; color: var(--gray); margin-top: 8px; }
+  .req small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; }
+  .bottom { margin-top: auto; }
+  .reqs, .two, .rows, .checks, .flow { margin-bottom: 18px; }
+  .bottom p { font-size: 26px; line-height: 1.55; margin-top: 10px; }
+  .bottom p + p { margin-top: 10px; }
+
+  /* 목록 */
+  .ul { list-style: none; margin-top: 14px; }
+  .ul li { font-size: 26px; line-height: 1.5; padding-left: 26px; position: relative; margin-top: 8px; }
+  .ul li::before { content: "·"; position: absolute; left: 6px; font-weight: 800; }
+  .navy .ul li { color: #e3eaf3; }
+  .navy .ul li b { color: #fff; }
+
+  /* 꼭 확인할 것 */
+  .checks { list-style: none; margin-top: 18px; }
+  .checks li { display: flex; gap: 20px; align-items: flex-start; font-size: 28px; line-height: 1.5; padding: 14px 0; border-bottom: 2px solid #eef1f4; }
+  .checks li:last-child { border-bottom: 0; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-soft); color: var(--navy); font-size: 22px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .checks small { display: block; font-size: 22px; color: #8a94a1; margin-top: 4px; }
+  .split { margin-top: auto; }
+  .split p { font-size: 26px; line-height: 1.6; color: var(--ink); margin-top: 10px; }
+  .split small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; line-height: 1.5; }
+  .tag-split { display: inline-block; font-size: 22px; font-weight: 700; color: var(--warn); background: #fbefeb; border: 2px solid #efcfc5; border-radius: 10px; padding: 2px 12px; margin-left: 10px; vertical-align: 2px; }
+
+  /* 흔한 실수 */
+  .fix { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; margin-top: 20px; }
+  .fix + .fix { margin-top: 12px; }
+  .fix.last { margin-bottom: 20px; }
+  .fix > div { padding: 14px 22px; font-size: 25px; line-height: 1.45; }
+  .fix .bad { background: var(--bg-soft); color: var(--gray); }
+  .fix .bad::before { content: "실수"; display: block; font-size: 21px; font-weight: 700; color: var(--warn); margin-bottom: 4px; }
+  .fix .good { background: #fff; }
+  .fix .good::before { content: "바로잡기"; display: block; font-size: 21px; font-weight: 700; color: var(--ok); margin-bottom: 4px; }
+  .fix small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .basis { margin-top: auto; background: var(--navy); color: #fff; border-radius: 24px; padding: 20px 30px; }
+  .basis .label { color: #b9c7da; }
+  .basis ul { list-style: none; margin-top: 10px; }
+  .basis li { font-size: 21px; line-height: 1.5; color: #e3eaf3; }
+  .basis li b { color: #fff; }
+  .nextline { margin-top: 16px; display: flex; gap: 16px; align-items: baseline; font-size: 25px; line-height: 1.45; background: var(--navy-soft); border-radius: 16px; padding: 16px 26px; }
+  .nextline .k { flex: none; font-weight: 700; color: var(--navy); }
+
+  footer { margin-top: 26px; font-size: 23px; color: #9aa3ae; display: flex; justify-content: space-between; gap: 20px; }
+
+  /* 판정표 */
+  .rows { margin-top: 24px; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; }
+  .rows .r { display: grid; grid-template-columns: 1fr 250px; gap: 22px; padding: 15px 28px; border-bottom: 2px solid #eef1f4; align-items: center; }
+  .rows .r:last-child { border-bottom: 0; }
+  .rows .q { font-size: 27px; line-height: 1.45; }
+  .rows .q small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .rows .a { font-size: 27px; font-weight: 800; line-height: 1.35; }
+  .rows .a.no { color: var(--ok); }
+  .rows .a.yes { color: var(--warn); }
+  .rows .a.calc { color: var(--navy); }
+  .calc4 .r { grid-template-columns: 1.55fr 1fr 1fr 1fr; gap: 12px; padding: 16px 24px; }
+  .calc4 .th { padding-top: 12px; padding-bottom: 12px; font-size: 21px; font-weight: 700; color: var(--gray); }
+  .calc4 .th div + div, .calc4 .v { text-align: right; }
+  .calc4 .q { font-size: 26px; }
+  .calc4 .v { font-size: 27px; font-weight: 700; color: var(--navy); }
+  .calc4 .v small { display: block; font-size: 20px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .calc4 .v.total { color: var(--warn); }
+  .note { font-size: 26px; line-height: 1.55; margin-top: 16px; color: var(--ink); }
+  .rows .a small { display: block; font-size: 23px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .rows .head { background: var(--bg-soft); padding: 14px 28px; font-size: 22px; font-weight: 700; color: var(--gray); }
+
+  /* 두 갈래 */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .two .card { padding: 26px 28px; }
+  .two b.t { display: block; font-size: 36px; margin-top: 6px; }
+  .two p { font-size: 25px; line-height: 1.5; margin-top: 10px; }
+  .two .navy p { color: #e3eaf3; }
+  .two .soft p { color: var(--ink); }
+
+  /* 처리 순서 */
+  .flow { display: flex; flex-direction: column; margin-top: 24px; }
+  .step { border: 2px solid var(--line); border-radius: 22px; padding: 16px 28px; display: grid; grid-template-columns: 112px 1fr; gap: 4px 20px; }
+  .step .n { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; padding-top: 7px; }
+  .step h3 { font-size: 33px; font-weight: 800; }
+  .step p { grid-column: 2; font-size: 25px; line-height: 1.5; color: var(--gray); }
+  .step p b { color: var(--ink); }
+  .step.key { border: 3px solid var(--navy); background: var(--navy-soft); }
+  .step.key p { color: var(--ink); }
+  .arr { text-align: center; color: #a8b0bb; font-size: 24px; line-height: 26px; }
+  .stop { margin-top: auto; border-radius: 22px; padding: 22px 30px; background: #fbefeb; border: 2px solid #efcfc5; font-size: 26px; line-height: 1.5; }
+  .stop b { color: var(--warn); }
+  .stop .ref { display: inline; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="slide" id="s1">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">1 / 6</span></div>
+  <p class="prev">경영자문료 시리즈 ⑤ · 카드 05 <b>송금과 외화 환산</b>에 이어 지급한 다음 해에 제출하는 서류를 봅니다</p>
+  <h1>본사 경영자문료,<br><em>지급명세서 제출</em></h1>
+  <p class="sub">한국 자회사가 국내사업장이 없는 외국 본사에 경영자문료를 지급했을 때 제출 여부와 기한을 봅니다. 국제거래명세서는 3막(연말 결산과 신고)에서 다룹니다.</p>
+  <div class="card navy answer">
+    <div class="label">한 줄 결론</div>
+    <p class="big">지급한 다음 해 <b class="nb">2월 말일</b>까지 제출합니다. 2026.1.1. 이후 발생분은 <b class="nb">원천징수를 하지 않았어도</b> 제출합니다. <b class="nb">비과세·면제신청서</b>를 세무서에 제출한 소득과 국외에서만 수행한 자문 용역(인적용역) 대가는 제외됩니다.</p>
+  </div>
+  <div class="chips">
+    <span class="chip">법인세법 §120의2</span><span class="chip">비과세·면제신청서</span><span class="chip">인적용역소득</span>
+  </div>
+  <footer><span>근거 확인 기준 2026.10.30</span><span>넘겨 보세요 ›</span></footer>
+</section>
+
+<!-- 2. 제출 대상 -->
+<section class="slide" id="s2">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">2 / 6</span></div>
+  <h2><span class="no">1</span>제출 대상인가</h2>
+  <p class="lead">경영자문료 중 제출 면제는 시행령이 정한 <b>비과세·면제신청을 한 소득</b>과 <b>원천징수세액 1천 원 미만</b>입니다.</p>
+  <div class="rows" style="margin-top:18px">
+    <div class="r th" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px; padding-top:10px; padding-bottom:10px; font-size:21px; font-weight:700; color:var(--gray)"><div>경우</div><div>원천징수·원천징수<wbr>이행상황신고 <span class="nb">(다음 달 10일)</span></div><div>지급명세서 <span class="nb">(다음 해</span> <span class="nb">2월 말일)</span></div></div>
+    <div class="r" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px"><div class="q">국내에서 수행, 20% 원천징수<small>법인세법 §98①4호&nbsp;· §120의2①</small></div><div class="a yes">원천징수·신고</div><div class="a yes">제출</div></div>
+    <div class="r" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px"><div class="q">국내에서 수행, 조약상 면제로 본사 비과세·면제신청서를 세무서에 제출<small>지급한 달의 다음 달 9일까지&nbsp;· 시행령 §138의4①&nbsp;· §162의2①6호</small></div><div class="a no">원천징수 없음<small>3장</small></div><div class="a no">제출하지 않음</div></div>
+    <div class="r" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px"><div class="q">국내에서 수행, 신청서 없이 조약상 면제로 보고 원천징수하지 않음(2026.1.1. 이후 발생분)<small>시행령 §162의2①4호&nbsp;· 부칙 §18</small></div><div class="a yes">원천징수 <span class="nb">의무 남음</span><small>3장</small></div><div class="a yes">제출</div></div>
+    <div class="r" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px"><div class="q">본사가 국외에서만 수행<small>국내원천소득 아님(조약이 국내 발생으로 보면 제출)&nbsp;· <span class="nb">서면-2026-국제세원-2130</span></small></div><div class="a no">원천징수 없음</div><div class="a no">대상 아님</div></div>
+    <div class="r" style="grid-template-columns:1fr 160px 140px; gap:14px; padding:10px 24px"><div class="q">사용료로 보아 제한세율로 원천징수<small>2026.1.1. 이후 신청분은 제한세율 적용신청서도 같은 기한에 제출(§98의6④)</small></div><div class="a yes">원천징수·신고</div><div class="a yes">제출</div></div>
+  </div>
+  <p class="note"><b>2025년 이전 발생분</b>은 종전 규정대로, 원천징수되지 않는 인적용역소득이면 제출하지 않습니다. 2025년 용역 대가를 2026년에 지급하면 어느 해 발생분인지 정한 해석은 <span class="nb">아직 없습니다.</span></p>
+  <footer style="margin-top:auto"><span></span><span>›</span></footer>
+</section>
+
+<!-- 3. 원천징수이행상황신고 -->
+<section class="slide" id="s3">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">3 / 6</span></div>
+  <h2><span class="no">2</span>원천징수와 원천징수이행상황신고</h2>
+  <ul class="checks">
+    <li><span>원천징수했다면 원천징수한 달의 다음 달 10일까지 세액을 납부하고 원천징수이행상황신고서를 제출합니다. <b>지급명세서와 별개</b>입니다.<small>법인세법 §98①&nbsp;· 시행령 §115①&nbsp;· §137③</small></span></li>
+    <li><span>2026.1.1. 이후 발생분을 신청서 없이 조약상 면제로 보고 원천징수하지 않았다면 <b>원천징수 의무가 남습니다</b>. 세무서가 그 세액에 원천징수 등 납부지연가산세를 더해 자회사에서 징수합니다.<small>가산세 계산은 카드 03과 같음&nbsp;· §98의4③&nbsp;· §98④&nbsp;· 법률 제20613호 부칙 §10&nbsp;· 국세기본법 §47의5①&nbsp;· 같은 법 시행령 §27의4①</small></span></li>
+  </ul>
+  <div class="card soft" style="padding:24px 30px; margin-top:14px">
+    <div class="label">신청서로 면제된 소득</div>
+    <p class="note" style="margin-top:10px">호외 01에서 본 것처럼 다른 소득을 원천징수해 신고서를 제출하는 달에는 함께 적지만, 무신고가산세·납부지연가산세가 없어 신고의 실익은 없습니다.</p>
+    <div class="ref">소득세법 시행령 §185②&nbsp;· 국세기본법 §47의2①</div>
+  </div>
+  <footer style="margin-top:auto"><span></span><span>›</span></footer>
+</section>
+
+<!-- 3. 기한과 제출 방법 -->
+<section class="slide" id="s4">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">4 / 6</span></div>
+  <h2><span class="no">3</span>기한과 제출 방법</h2>
+  <div class="flow">
+    <div class="step key"><div class="n">기한</div><h3>지급한 다음 해 2월 말일</h3><p>지급일이 속하는 연도의 다음 연도 2월 말일까지 납세지 관할 세무서에 제출합니다. 휴업·폐업하면 휴업일·폐업일이 속하는 달의 다음다음 달 말일입니다. 기한이 토요일·일요일, 공휴일·대체공휴일, 노동절이면 그다음 날이 기한입니다.</p></div>
+    <div class="arr">↓</div>
+    <div class="step"><div class="n">서식</div><h3>비거주자 지급명세서 준용</h3><p>소득세법 시행규칙 별지 제23호서식(5) 「비거주자의 사업·선박등 임대·사용료·인적용역·기타소득 지급명세서(발행자보고용)」를 사용합니다.</p></div>
+    <div class="arr">↓</div>
+    <div class="step"><div class="n">방법</div><h3>전자 제출</h3><p>정보통신망 등 전자적 방법으로 제출합니다.</p></div>
+  </div>
+  <div class="card soft" style="padding:22px 30px; margin-top:6px">
+    <div class="label">예) 카드 05의 자회사 · 2026년 11월 지급분</div>
+    <p class="note" style="margin-top:10px">본사에 지급한 사용료 1억 450만 원(카드 05의 본사 부담 예, 1,100만 엔 × 9.5원, 가정 환율 100엔 = 950원)을 적어 <b>2027.3.2.(화)</b>까지 제출합니다. 2027.2.28.이 일요일, 3.1.이 삼일절이기 때문입니다. 제한세율 적용신청서도 2026.1.1. 이후 신청분이면 같은 기한에 제출합니다.</p>
+  </div>
+  <footer style="margin-top:auto"><span>근거: 법인세법 §120의2①②&nbsp;· 시행규칙 §82⑱&nbsp;· 소득세법 §164③&nbsp;· 국세기본법 §5①</span><span>›</span></footer>
+</section>
+
+<!-- 4. 가산세와 꼭 확인할 것 -->
+<section class="slide" id="s5">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">5 / 6</span></div>
+  <h2><span class="no">4</span>가산세와 꼭 확인할 것</h2>
+  <div class="rows">
+    <div class="head">지급명세서 가산세 · 법인세법 §75의7</div>
+    <div class="r"><div class="q">기한까지 제출하지 않음</div><div class="a calc">지급금액의 1%</div></div>
+    <div class="r"><div class="q">기한이 지난 후 3개월 이내에 제출</div><div class="a calc">지급금액의 0.5%</div></div>
+    <div class="r"><div class="q">불분명하거나 지급금액이 사실과 다름</div><div class="a calc">그 금액의 1%</div></div>
+  </div>
+  <p class="note">예) 4장 사용료 1억 450만 원을 제출하지 않으면 1억 450만 원 × 1% = 104만 5천 원, 3개월 안에 제출하면 × 0.5% = 52만 2,500원입니다. 산출세액이 없어도 부과되며, 의무위반 종류별로 5천만 원(중소기업이 아니면 1억 원) 한도가 있습니다(고의 위반은 한도 없음).<span class="ref nb"> §75의7⑥&nbsp;· 국세기본법 §49①</span></p>
+  <ul class="checks">
+    <li><span>신청서 없이 원천징수하지 않고 지급명세서까지 제출하지 않으면, 나중에 면제 대상으로 확인되어도 지급명세서 가산세를 부과한 해석·결정이 있습니다.<small>해석·결정(주식·특허권 양도, 축구 이적료, 옛 조문)&nbsp;· 조심2017중3535&nbsp;· <span class="nb">국제세원관리담당관실-63</span>(2013.3.4.)&nbsp;· <span class="nb">법규과-953</span>(2014.8.29.)</small></span></li>
+  </ul>
+  <footer style="margin-top:auto"><span></span><span>›</span></footer>
+</section>
+
+<!-- 5. 흔한 실수 -->
+<section class="slide" id="s6">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 06 · 2026.11.06</span><span class="page">6 / 6</span></div>
+  <h2><span class="no">5</span>흔한 실수</h2>
+  <div class="fix">
+    <div class="bad">조약상 면제라서 원천징수하지 않았으니 지급명세서도 제출하지 않음</div>
+    <div class="good">2026.1.1. 이후 발생분은 신청서를 제출한 소득만 제외되고, 없으면 원천징수하고 제출합니다. 강의료 등 다른 인적용역도 같습니다(호외 01)<small>§98의4③&nbsp;· 시행령 §162의2①6호&nbsp;· 조심2017중3535(주식 양도)</small></div>
+  </div>
+  <div class="fix">
+    <div class="bad">2025년까지처럼 원천징수되지 않는 인적용역소득은 제출하지 않음</div>
+    <div class="good">2026.1.1. 이후 발생분부터 이 면제가 없어졌습니다<small>시행령 §162의2①4호&nbsp;· 부칙 §18</small></div>
+  </div>
+  <div class="fix last" style="margin-bottom:10px">
+    <div class="bad">거주자 근로소득처럼 3월 10일까지, 또는 매월 간이지급명세서로 제출</div>
+    <div class="good">외국법인 지급분은 다음 해 2월 말일까지 한 번 제출하며, 간이지급명세서 대상이 아닙니다<small>법인세법 §120의2①&nbsp;· 소득세법 §164의3①</small></div>
+  </div>
+  <div class="basis" style="padding:14px 30px">
+    <div class="label">근거</div>
+    <ul>
+      <li><b>법령</b> 법인세법 §75의7·§98①④·§98의4·§98의6④·§120의2&nbsp;· 시행령 §115·§137·§138의4·§162의2&nbsp;· 시행규칙 §82⑱&nbsp;· 소득세법 §164·§164의3 · 시행령 §185&nbsp;· 국세기본법 §5·§47의2·§47의5·§49 · 시행령 §27의4</li>
+      <li><b>부칙</b> 법률 <span class="nb">제20613호 §10</span>&nbsp;· <span class="nb">제21217호 §13</span>&nbsp;· 대통령령 <span class="nb">제35350호 §18</span></li>
+      <li><b>해석·결정</b> <span class="nb">서면-2026-국제세원-2130</span>&nbsp;· <span class="nb">국제세원관리담당관실-63</span>(2013.3.4.)&nbsp;· <span class="nb">법규과-953</span>(2014.8.29.)&nbsp;· 조심2017중3535</li>
+    </ul>
+  </div>
+  <p class="nextline"><span class="k">다음 카드 · 11.10(화) · 07</span><span>본사 사용료, 사용료인가 용역 대가인가</span></p>
+  <footer><span>근거 확인 기준 2026.10.30 · 실무 참고용이며 개별 사안은 검토가 필요합니다</span></footer>
+</section>
+
+<script>
+  var n = location.hash.replace('#', '');
+  if (n) { document.body.classList.add('one'); var s = document.getElementById('s' + n); if (s) s.classList.add('on'); }
+</script>
+</body>
+</html>
