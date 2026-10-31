@@ -254,8 +254,10 @@ def check_card(c, src, guard):
     if dot_date(c["published"]) not in raw:
         problems.append(f"{no}번 카드 안에 게시일 {dot_date(c['published'])} 표기가 없음")
     chars = slide_chars(raw)
-    if sum(chars) > MAX_CARD_CHARS:
-        problems.append(f"{no}번 분량 {sum(chars)}자 — 상한 {MAX_CARD_CHARS}자 초과")
+    # 합계 상한은 사용자가 승인한 카드만 cards.json의 max_chars로 예외를 둔다. 장당 상한은 예외 없음.
+    card_max = c.get("max_chars", MAX_CARD_CHARS)
+    if sum(chars) > card_max:
+        problems.append(f"{no}번 분량 {sum(chars)}자 — 상한 {card_max}자 초과")
     for i, n in enumerate(chars, 1):
         if n > MAX_SLIDE_CHARS:
             problems.append(f"{no}번 {i}장 분량 {n}자 — 장당 상한 {MAX_SLIDE_CHARS}자 초과")
