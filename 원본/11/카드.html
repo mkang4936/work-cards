@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>외투법인 실무 카드 11</title>
+<style>
+  :root {
+    --navy: #1f3a5f;
+    --navy-soft: #e9eef5;
+    --ink: #1d232b;
+    --gray: #5b6573;
+    --line: #dde2e8;
+    --bg-soft: #f6f7f9;
+    --ok: #2f7a5b;
+    --warn: #a4462f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; }
+  body {
+    width: 1080px;
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  .slide {
+    width: 1080px; height: 1350px; padding: 64px 76px 48px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  body.one .slide { display: none; border-bottom: 0; }
+  body.one .slide.on { display: flex; }
+  .slide > * { flex-shrink: 0; }
+
+  /* 머리 */
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 26px; font-weight: 600; color: var(--ok);
+    background: #eaf4ef; border-radius: 999px; padding: 10px 24px;
+  }
+  .badge::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--ok); }
+  .page { font-size: 26px; color: #9aa3ae; font-weight: 600; }
+  .prev { margin-top: 34px; font-size: 26px; line-height: 1.5; color: var(--gray); border-left: 6px solid var(--navy); padding: 2px 0 2px 18px; }
+  .prev b { color: var(--navy); }
+  h1 { font-size: 72px; font-weight: 800; letter-spacing: -2px; line-height: 1.25; margin-top: 30px; }
+  h1 em { font-style: normal; color: var(--navy); }
+  .sub { font-size: 32px; color: var(--gray); margin-top: 26px; line-height: 1.6; }
+
+  h2 {
+    font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px;
+    letter-spacing: -1px; margin-top: 36px;
+  }
+  h2 .no {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--navy); color: #fff;
+    font-size: 28px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  }
+  .lead { font-size: 30px; color: var(--gray); margin-top: 18px; line-height: 1.55; }
+  .lead b { color: var(--ink); }
+
+  .card { border: 2px solid var(--line); border-radius: 24px; padding: 30px 36px; }
+  .label { font-size: 26px; font-weight: 700; color: var(--gray); letter-spacing: 0.5px; }
+  .navy { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .navy .label { color: #b9c7da; }
+  .soft { background: var(--bg-soft); }
+  .nb { white-space: nowrap; }
+  .ref { font-size: 23px; color: #8a94a1; margin-top: 10px; line-height: 1.5; }
+  .navy .ref { color: #9fb0c6; }
+
+  /* 표지 */
+  .answer { margin-top: auto; }
+  .answer .big { font-size: 37px; font-weight: 700; line-height: 1.55; margin-top: 14px; }
+  .answer .big b { color: #fff; background: rgba(255,255,255,0.14); border-radius: 10px; padding: 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .chip { font-size: 25px; padding: 10px 20px; border-radius: 14px; background: var(--bg-soft); border: 2px solid var(--line); }
+
+  /* 요건 격자 */
+  .reqs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+  .req { border: 2px solid var(--line); border-radius: 22px; padding: 22px 26px; }
+  .req .k { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; }
+  .req b { display: block; font-size: 33px; margin-top: 4px; }
+  .req p { font-size: 25px; line-height: 1.45; color: var(--gray); margin-top: 8px; }
+  .req small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; }
+  .bottom { margin-top: auto; }
+  .reqs, .two, .rows, .checks, .flow { margin-bottom: 18px; }
+  .bottom p { font-size: 26px; line-height: 1.55; margin-top: 10px; }
+  .bottom p + p { margin-top: 10px; }
+
+  /* 목록 */
+  .ul { list-style: none; margin-top: 14px; }
+  .ul li { font-size: 26px; line-height: 1.5; padding-left: 26px; position: relative; margin-top: 8px; }
+  .ul li::before { content: "·"; position: absolute; left: 6px; font-weight: 800; }
+  .navy .ul li { color: #e3eaf3; }
+  .navy .ul li b { color: #fff; }
+
+  /* 꼭 확인할 것 */
+  .checks { list-style: none; margin-top: 18px; }
+  .checks li { display: flex; gap: 20px; align-items: flex-start; font-size: 28px; line-height: 1.5; padding: 14px 0; border-bottom: 2px solid #eef1f4; }
+  .checks li:last-child { border-bottom: 0; }
+  .checks li::before {
+    content: "✓"; flex: none; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy-soft); color: var(--navy); font-size: 22px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .checks small { display: block; font-size: 22px; color: #8a94a1; margin-top: 4px; }
+  .split { margin-top: auto; }
+  .split p { font-size: 26px; line-height: 1.6; color: var(--ink); margin-top: 10px; }
+  .split small { display: block; font-size: 22px; color: #8a94a1; margin-top: 8px; line-height: 1.5; }
+  .tag-split { display: inline-block; font-size: 22px; font-weight: 700; color: var(--warn); background: #fbefeb; border: 2px solid #efcfc5; border-radius: 10px; padding: 2px 12px; margin-left: 10px; vertical-align: 2px; }
+
+  /* 흔한 실수 */
+  .fix { display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; margin-top: 20px; }
+  .fix + .fix { margin-top: 12px; }
+  .fix.last { margin-bottom: 20px; }
+  .fix > div { padding: 14px 22px; font-size: 25px; line-height: 1.45; }
+  .fix .bad { background: var(--bg-soft); color: var(--gray); }
+  .fix .bad::before { content: "실수"; display: block; font-size: 21px; font-weight: 700; color: var(--warn); margin-bottom: 4px; }
+  .fix .good { background: #fff; }
+  .fix .good::before { content: "바로잡기"; display: block; font-size: 21px; font-weight: 700; color: var(--ok); margin-bottom: 4px; }
+  .fix small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .basis { margin-top: auto; background: var(--navy); color: #fff; border-radius: 24px; padding: 20px 30px; }
+  .basis .label { color: #b9c7da; }
+  .basis ul { list-style: none; margin-top: 10px; }
+  .basis li { font-size: 21px; line-height: 1.5; color: #e3eaf3; }
+  .basis li b { color: #fff; }
+  .nextline { margin-top: 16px; display: flex; gap: 16px; align-items: baseline; font-size: 25px; line-height: 1.45; background: var(--navy-soft); border-radius: 16px; padding: 16px 26px; }
+  .nextline .k { flex: none; font-weight: 700; color: var(--navy); }
+
+  footer { margin-top: 26px; font-size: 23px; color: #9aa3ae; display: flex; justify-content: space-between; gap: 20px; }
+
+  /* 판정표 */
+  .rows { margin-top: 24px; border: 2px solid var(--line); border-radius: 22px; overflow: hidden; }
+  .rows .r { display: grid; grid-template-columns: 1fr 250px; gap: 22px; padding: 15px 28px; border-bottom: 2px solid #eef1f4; align-items: center; }
+  .rows .r:last-child { border-bottom: 0; }
+  .rows .q { font-size: 27px; line-height: 1.45; }
+  .rows .q small { display: block; font-size: 21px; color: #8a94a1; margin-top: 4px; }
+  .rows .a { font-size: 27px; font-weight: 800; line-height: 1.35; }
+  .rows .a.no { color: var(--ok); }
+  .rows .a.yes { color: var(--warn); }
+  .rows .a.calc { color: var(--navy); }
+  .calc4 .r { grid-template-columns: 1.55fr 1fr 1fr 1fr; gap: 12px; padding: 16px 24px; }
+  .calc4 .th { padding-top: 12px; padding-bottom: 12px; font-size: 21px; font-weight: 700; color: var(--gray); }
+  .calc4 .th div + div, .calc4 .v { text-align: right; }
+  .calc4 .q { font-size: 26px; }
+  .calc4 .v { font-size: 27px; font-weight: 700; color: var(--navy); }
+  .calc4 .v small { display: block; font-size: 20px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .calc4 .v.total { color: var(--warn); }
+  .note { font-size: 26px; line-height: 1.55; margin-top: 16px; color: var(--ink); }
+  .rows .a small { display: block; font-size: 23px; font-weight: 600; color: #8a94a1; margin-top: 2px; }
+  .rows .head { background: var(--bg-soft); padding: 14px 28px; font-size: 22px; font-weight: 700; color: var(--gray); }
+
+  /* 두 갈래 */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .two .card { padding: 26px 28px; }
+  .two b.t { display: block; font-size: 36px; margin-top: 6px; }
+  .two p { font-size: 25px; line-height: 1.5; margin-top: 10px; }
+  .two .navy p { color: #e3eaf3; }
+  .two .soft p { color: var(--ink); }
+
+  /* 처리 순서 */
+  .flow { display: flex; flex-direction: column; margin-top: 24px; }
+  .step { border: 2px solid var(--line); border-radius: 22px; padding: 16px 28px; display: grid; grid-template-columns: 112px 1fr; gap: 4px 20px; }
+  .step .n { font-size: 23px; font-weight: 700; color: var(--navy); letter-spacing: 1px; padding-top: 7px; }
+  .step h3 { font-size: 33px; font-weight: 800; }
+  .step p { grid-column: 2; font-size: 25px; line-height: 1.5; color: var(--gray); }
+  .step p b { color: var(--ink); }
+  .step.key { border: 3px solid var(--navy); background: var(--navy-soft); }
+  .step.key p { color: var(--ink); }
+  .arr { text-align: center; color: #a8b0bb; font-size: 24px; line-height: 26px; }
+  .stop { margin-top: auto; border-radius: 22px; padding: 22px 30px; background: #fbefeb; border: 2px solid #efcfc5; font-size: 26px; line-height: 1.5; }
+  .stop b { color: var(--warn); }
+  .stop .ref { display: inline; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="slide" id="s1">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">1 / 6</span></div>
+  <p class="prev">자금 조달 시리즈 · <span class="nb">① 이자 원천징수(10)</span> → <span class="nb"><b>② 과소자본(11)</b></span> → <span class="nb">③ 지급보증(12)</span> → <span class="nb">④ 증자(13)</span></p>
+  <h1>본사 차입금 이자,<br><em>과소자본과 손금 한도</em></h1>
+  <p class="sub">한국 자회사가 외국 본사(지분 50% 이상)에게서 차입하거나 본사 보증으로 은행에서 차입하고 그 이자를 비용으로 처리하는 경우입니다. 혼성금융상품 이자는 다루지 않습니다.</p>
+  <div class="card navy answer">
+    <div class="label">한 줄 결론</div>
+    <p class="big">본사·본사 계열사에서 차입한 금액과 <b class="nb">본사 보증 차입금</b>의 합계가 본사 출자금액의 <b class="nb">2배</b>를 넘으면 그 초과분 이자는 손금에 산입하지 않습니다. 본사 차입분 이자는 <b class="nb">배당으로 처분</b>되어 이자로 원천징수한 세액과 정산합니다.</p>
+  </div>
+  <div class="chips">
+    <span class="chip">과소자본</span><span class="chip">국조법 §22</span><span class="chip">국외지배주주</span><span class="chip">지급보증 차입금</span><span class="chip">배당 처분</span><span class="chip">소득 대비 과다이자</span>
+  </div>
+  <footer><span>근거 확인 기준 2026.11.05</span><span>넘겨 보세요 ›</span></footer>
+</section>
+
+<!-- 2. 2배 기준 -->
+<section class="slide" id="s2">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">2 / 6</span></div>
+  <h2><span class="no">1</span>무엇을 2배와 비교하나</h2>
+  <p class="lead"><b>국외지배주주</b>는 사업연도 종료일 현재 의결권 있는 주식의 50% 이상을 직접·간접으로 소유한 외국주주 등입니다. 이 회사의 일본 본사(지분 100%)가 해당합니다.<span class="ref nb"> 국조법 §22① · 시행령 §45①</span></p>
+  <div class="rows">
+    <div class="r"><div class="q">차입금 합계<small>① 본사에서 차입한 금액 ② 본사의 특수관계인(계열사)에서 차입한 금액 ③ 본사 지급보증(담보 제공 등 실질적 보증 포함)으로 은행 등 제3자에서 차입한 금액 · §22②</small></div><div class="a calc">①+②+③</div></div>
+    <div class="r"><div class="q">출자금액<small>사업연도 종료일 현재 순자산과 납입자본금 중 큰 금액 × 본사 지분비율 — 결손으로 순자산이 작으면 납입자본금으로 잽니다 · 시행령 §47①</small></div><div class="a calc">× 2배<small>금융업 6배</small></div></div>
+    <div class="r"><div class="q">외화 차입금<small>시행령 §46④</small></div><div class="a calc">사업연도 종료일 기준환율 또는 재정환율</div></div>
+  </div>
+  <div class="card soft bottom" style="padding:20px 30px">
+    <div class="label">적수로 계산합니다</div>
+    <p>차입금은 날마다의 잔액을 더한 적수로, 출자금액은 사업연도 종료일 현재 금액을 기준으로 한 적수(사업연도 중 증자·감자가 있으면 기간별 적수)로 계산해 비교하고, 초과분에는 <b>이자율이 높은 차입금부터</b>(같으면 늦게 차입한 것부터) 포함합니다.</p>
+    <div class="ref">§22⑥ · 시행령 §47② · §48①②</div>
+  </div>
+  <footer><span>국조법 = 국제조세조정에 관한 법률</span><span>›</span></footer>
+</section>
+
+<!-- 3. 계산과 처분 -->
+<section class="slide" id="s3">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">3 / 6</span></div>
+  <h2><span class="no">2</span>계산과 처분</h2>
+  <div class="rows">
+    <div class="head">카드 10의 차입금 1억 1,000만 엔(연 2%, 연중 같은 잔액) · 계열사 차입·본사 보증 차입은 없고 사업연도 종료일 환율도 100엔 = 950원이라고 가정</div>
+    <div class="r"><div class="q">기준(출자금액 4억 원 × 2)<small>납입자본금 4억 원 · 결손으로 순자산 3억 원 · 지분 100%</small></div><div class="a calc">8억 원</div></div>
+    <div class="r"><div class="q">본사 차입금<small>1억 1,000만 엔 × 9.5원</small></div><div class="a calc">10억 4,500만 원</div></div>
+    <div class="r"><div class="q">손금불산입 이자<small>초과분 2억 4,500만 원(10억 4,500만 − 8억) × 2%</small></div><div class="a yes">490만 원<small>배당 처분</small></div></div>
+  </div>
+  <ul class="checks">
+    <li><span>본사 차입분 이자는 <b>배당</b>, 계열사·보증 제3자 차입분 이자는 <b>기타사외유출</b>로 처분합니다. 기타사외유출은 배당·상여·기타소득과 구분되는 처분으로, 배당소득 원천징수는 본사 차입분만 합니다.<small>국조법 §22② · 시행령 §49 · 법인세법 §67·§93 2호 마목 · 같은 법 시행령 §106①</small></span></li>
+    <li><span>카드 04의 임시유보·반환 절차와 카드 05의 이전소득금액통지서 기준 지급 시기는 이 처분에 쓰지 않습니다. 신고 때 배당 처분하면 <b>신고한 날</b>, 세무서가 경정하면 소득금액변동통지서를 받은 날에 지급한 것으로 봅니다.<small>법인세법 시행령 §137① · 소득세법 §131②</small></span></li>
+  </ul>
+  <footer style="margin-top:auto"><span></span><span>›</span></footer>
+</section>
+
+<!-- 4. 배당 처분분의 세액 정산 -->
+<section class="slide" id="s4">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">4 / 6</span></div>
+  <h2><span class="no">3</span>배당 처분액의 세액 정산</h2>
+  <ul class="checks">
+    <li><span>배당 처분액(본사의 국내원천 배당소득)에 대한 세액은 사업연도 중 이자를 지급하며 원천징수한 세액과 <b>상계</b>하고, 차액은 법인세 신고기한이 속하는 달의 다음 달 10일까지 납부하거나 환급 신청합니다.<small>법인세법 §93 2호 마목 · 국조법 §22⑤ · 시행령 §52</small></span></li>
+    <li><span>이자를 지급하지 않아 원천징수한 세액이 없으면 상계 없이 배당 처분액 전액의 세액을 <b>같은 기한</b>까지 납부합니다(카드 10).</span></li>
+    <li><span>본사 차입금 등이 있으면 2배를 넘지 않아도 법인세 신고 때 「국외지배주주에게 지급하는 이자등에 대한 조정 명세서」를 제출하고, 상계 차액이 있으면 원천징수세액 조정 명세서도 함께 제출합니다.<small>시행령 §53 · 시행규칙 별지 제24호·제25호서식</small></span></li>
+  </ul>
+  <div class="card soft split" style="padding:20px 30px">
+    <div class="label">아직 정리되지 않은 것<span class="tag-split">제한세율</span></div>
+    <p>배당 처분액을 조약상 이자로 본 해석(한미 — 원천징수는 국내세법에 따름)과 판결(한호주 조약, 외국은행 국내지점 사안 — 국내원천 여부를 가리면서 항소심이 이자로 보고 대법원이 유지, 세율은 판단하지 않음)이 있습니다(모두 옛 조문 사안). 한일 조약은 해석이 없어 상계 때 적용 세율을 세무대리인과 정해 둡니다.</p>
+    <small>기획재정부 조세정책과-523(2019.3.21.) · 대법원 2018두58332</small>
+  </div>
+  <footer><span></span><span>›</span></footer>
+</section>
+
+<!-- 5. 적용 배제와 다른 한도 -->
+<section class="slide" id="s5">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">5 / 6</span></div>
+  <h2><span class="no">4</span>적용하지 않는 경우와 다른 한도</h2>
+  <ul class="checks">
+    <li><span>차입 규모·조건이 특수관계 없는 자 사이의 통상적인 것임을 증명하면 2배 기준을 적용하지 않습니다. 사실상 출자가 아님을 보이는 자료와 비교대상배수 자료를 <b>법인세 신고기한까지</b> 제출해야 합니다. 비교대상배수는 같은 종류의 사업을 하는 비교가능한 내국법인(사업 규모·경영 여건이 비슷하고 대표성 있는 법인)의 자기자본 대비 차입금 배수이며, 실제 배수가 비교대상배수를 넘으면 넘는 부분 이자는 손금에 산입하지 않습니다.<small>§22④ · 시행령 §51①② · 비교대상법인 자료가 부족해 배제를 인정하지 않은 결정: 조심2024부3274(옛 조문 사안)</small></span></li>
+    <li><span><b>소득 대비 과다이자</b> — 국외특수관계인(본사처럼 지분 50% 이상 등으로 특수관계에 있는 외국법인)에게 지급한 이자에서 그에게서 받은 이자를 차감한 순이자비용이 조정소득금액(감가상각비와 순이자비용을 빼기 전 소득금액)의 30%를 넘으면 초과분도 손금불산입·기타사외유출입니다(금융·보험업 등 제외).<small>국조법 §2①3호·4호 · §24①②③</small></span></li>
+    <li><span>과소자본과 과다이자가 함께 걸리면 <b>손금불산입액이 큰 쪽 하나</b>만(같으면 과소자본) 적용합니다. 이 둘은 정상가격 조정(카드 04)과 법인세법 §28 지급이자 손금불산입보다 먼저 적용합니다. 과소자본 계산 뒤에도 이자율이 정상이자율을 넘으면 정상가격 조정 대상이 될 수 있습니다(카드 04).<small>국조법 §7·§26①② · 시행령 §11 · 시행규칙 §3</small></span></li>
+  </ul>
+  <footer style="margin-top:auto"><span></span><span>›</span></footer>
+</section>
+
+<!-- 6. 흔한 실수 -->
+<section class="slide" id="s6">
+  <div class="top"><span class="badge">외투법인 실무 카드 · 11 · 2026.11.24</span><span class="page">6 / 6</span></div>
+  <h2><span class="no">5</span>흔한 실수</h2>
+  <div class="fix">
+    <div class="bad">본사 지급보증으로 국내 은행에서 차입한 금액은 본사 차입금이 아니라서 계산에서 뺌</div>
+    <div class="good">실질적 보증으로 차입한 금액도 차입금 합계에 포함합니다(그 이자는 기타사외유출)<small>§22②3호 · 시행령 §49</small></div>
+  </div>
+  <div class="fix">
+    <div class="bad">통상적인 조건이라 자료 없이 과소자본 계산을 하지 않음</div>
+    <div class="good">증명 자료를 신고기한까지 제출해야 적용하지 않습니다<small>시행령 §51①</small></div>
+  </div>
+  <div class="fix last">
+    <div class="bad">배당 처분된 이자를 나중에 실제로 지급할 때 다시 원천징수</div>
+    <div class="good">다시 원천징수하지 않는다고 본 회신이 있습니다(옛 조문 사안)<small><span class="nb">국제세원관리담당관실-1746</span>(2008.9.24.)</small></div>
+  </div>
+  <div class="basis">
+    <div class="label">근거</div>
+    <ul>
+      <li><b>법령</b> <span class="nb">국조법 §7·§22·§24·§26 ·</span> <span class="nb">시행령 §11·§45~§53 ·</span> <span class="nb">시행규칙 §3·별지 제24호·제25호서식 ·</span> <span class="nb">법인세법 §28·§93 2호</span></li>
+      <li><b>해석·결정·판결</b> <span class="nb">기획재정부 조세정책과-523(2019.3.21.) ·</span> <span class="nb">대법원 2018두58332 ·</span> <span class="nb">조심2024부3274 ·</span> <span class="nb">국제세원관리담당관실-1746(2008.9.24.)</span></li>
+    </ul>
+  </div>
+  <p class="nextline"><span class="k">다음 카드 · 11.27(금) · 12</span><span>본사 지급보증수수료, 소득 구분과 정상가격</span></p>
+  <footer><span>근거 확인 기준 2026.11.05 · 실무 참고용이며 개별 사안은 검토가 필요합니다</span></footer>
+</section>
+
+<script>
+  var n = location.hash.replace('#', '');
+  if (n) { document.body.classList.add('one'); var s = document.getElementById('s' + n); if (s) s.classList.add('on'); }
+</script>
+</body>
+</html>
