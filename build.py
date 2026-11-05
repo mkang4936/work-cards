@@ -202,6 +202,16 @@ def slide_chars(src_html):
             for s in re.findall(r'<section class="slide".*?</section>', body, flags=re.S)]
 
 
+# 개념 정리 상자(설계.md, 사용자 2026-11-05): <!--개념정리-->…<!--/개념정리--> 안의 글자는 합계 상한에서 빼고 상자마다 따로 센다.
+CONCEPT_RE = r"<!--개념정리-->(.*?)<!--/개념정리-->"
+MAX_CONCEPT_CHARS = 200
+
+
+def concept_chars(src_html):
+    return [len(re.sub(r"\s", "", html.unescape(re.sub(r"<[^>]+>", "", m))))
+            for m in re.findall(CONCEPT_RE, src_html, flags=re.S)]
+
+
 def load_guard():
     spec = importlib.util.spec_from_file_location("korean_guard", KOREAN_GUARD)
     mod = importlib.util.module_from_spec(spec)
@@ -256,8 +266,13 @@ def check_card(c, src, guard):
     chars = slide_chars(raw)
     # 합계 상한은 사용자가 승인한 카드만 cards.json의 max_chars로 예외를 둔다. 장당 상한은 예외 없음.
     card_max = c.get("max_chars", MAX_CARD_CHARS)
-    if sum(chars) > card_max:
-        problems.append(f"{no}번 분량 {sum(chars)}자 — 상한 {card_max}자 초과")
+    concepts = concept_chars(raw)
+    body_total = sum(chars) - sum(concepts)
+    if body_total > card_max:
+        problems.append(f"{no}번 분량 {body_total}자(개념 정리 상자 제외) — 상한 {card_max}자 초과")
+    for i, n in enumerate(concepts, 1):
+        if n > MAX_CONCEPT_CHARS:
+            problems.append(f"{no}번 개념 정리 상자 {i} 분량 {n}자 — 상한 {MAX_CONCEPT_CHARS}자 초과")
     for i, n in enumerate(chars, 1):
         if n > MAX_SLIDE_CHARS:
             problems.append(f"{no}번 {i}장 분량 {n}자 — 장당 상한 {MAX_SLIDE_CHARS}자 초과")
