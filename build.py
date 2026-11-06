@@ -17,6 +17,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 EDGE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
 KOREAN_GUARD = Path.home() / ".claude" / "hooks" / "korean_guard.py"
+# 어휘 정본(PC에만 있는 점검 프로그램) — 그 경로는 깃허브에 올리지 않는 .claude/lexicon_path.txt 한 줄에 둔다.
+# 이 파일이 없거나 정본을 못 읽으면 만들지 않고 멈춘다(연결이 빠진 채 지나가지 않게). 「금지」는 막고 「주의」는 건수만 알린다.
+LEXICON_PTR = ROOT / ".claude" / "lexicon_path.txt"
 W, H = 1080, 1350
 
 # 사례집 어휘 규칙에서 카드에 그대로 쓰는 것(설계.md). 활용형이 갈리는 말은 금지된 꼴만 적는다.
@@ -219,6 +222,17 @@ def load_guard():
     return mod
 
 
+def load_lexicon():
+    if not LEXICON_PTR.exists():
+        print(f"어휘 정본 연결 파일이 없어 만들지 않았습니다: .claude/{LEXICON_PTR.name}")
+        sys.exit(1)
+    path = Path(LEXICON_PTR.read_text(encoding="utf-8").strip())
+    spec = importlib.util.spec_from_file_location("lexicon", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def dom_check(src, js, pre_id, what):
     with tempfile.TemporaryDirectory() as td:
         tmp = Path(td) / "점검.html"
@@ -302,11 +316,19 @@ def main():
     base = site["base_url"]
     esc = html.escape
     guard = load_guard()
+    lexicon = load_lexicon()
 
     # 1) 기계 점검 — 걸리면 아무것도 만들지 않는다
-    problems = []
+    problems, notes = [], []
     for c in cards:
-        problems += check_card(c, ROOT / "원본" / c["no"] / "카드.html", guard)
+        src = ROOT / "원본" / c["no"] / "카드.html"
+        problems += check_card(c, src, guard)
+        bad, warn = lexicon.점검(src.read_text(encoding="utf-8"))
+        problems += [f"{c['no']}번 어휘 정본 {x}" for x in bad]
+        if warn:
+            notes.append(f"{c['no']} {len(warn)}건")
+    if notes:
+        print("어휘 정본 주의(사람이 문맥을 볼 것, 막지 않음):", ", ".join(notes))
     if problems:
         print("기계 점검에 걸려 만들지 않았습니다:", *problems, sep="\n  ")
         sys.exit(1)
